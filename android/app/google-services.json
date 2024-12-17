@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "773055938161",
+    "project_id": "master-chef-1efaf",
+    "storage_bucket": "master-chef-1efaf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773055938161:android:7b567d8c054f1a02cb65d0",
+        "android_client_info": {
+          "package_name": "com.victor.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXgKVQu3-lmUq7ypfbV-_RvzeHIMupg2c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

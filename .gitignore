@@ -1,0 +1,59 @@
+# Flutter related
+**/ios/Flutter/.last_build_id
+**/ios/.generated/
+**/ios/.symlinks/
+**/ios/Flutter/ephemeral/
+**/ios/Pods/
+**/ios/.flutter-plugins
+**/ios/.flutter-plugins-dependencies
+
+# Android related
+**/android/.gradle/
+**/android/app/*.iml
+**/android/local.properties
+**/android/.idea/
+**/android/app/build/
+**/android/.cxx/
+**/android/app/*.keystore
+
+# Dart
+*.dart_tool/
+*.packages
+*.pubspec.lock
+
+# Build outputs
+build/
+flutter_build/
+*.apk
+*.aab
+*.app.dSYM
+*.obb
+*.app/
+
+# Debug files
+debug.log
+*.log
+
+# Miscellaneous
+.DS_Store
+.idea/
+*.iml
+*.swp
+*.lock
+*.tmp
+Thumbs.db
+Desktop.ini
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Generated files
+pubspec.lock
+flutter_export_environment.sh
