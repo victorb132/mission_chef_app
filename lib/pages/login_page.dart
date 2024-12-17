@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:get/get.dart';
+import 'package:master_chef_app/controllers/auth_controller.dart';
+import 'package:master_chef_app/pages/forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,30 +12,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool hasAccount = true;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  Future<void> _handleGoogleSignIn() async {
-    try {
-      final GoogleSignInAccount? account = await _googleSignIn.signIn();
-      if (account != null) {
-        print('Nome do Usuário: ${account.displayName}');
-        print('Email: ${account.email}');
-        print('Photo URL: ${account.photoUrl}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Login bem-sucedido: ${account.displayName}'),
-          ),
-        );
-      }
-    } catch (error) {
-      print('Erro no login com Google: $error');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Falha no login com Google: $error'),
-        ),
-      );
-    }
-  }
+  final AuthController authController = Get.find<AuthController>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   void changeToLoginOrRegister() {
     setState(() {
@@ -125,12 +107,14 @@ class _LoginPageState extends State<LoginPage> {
     return Column(
       children: [
         TextFormField(
+          controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           style: const TextStyle(fontSize: 14),
           decoration: _textFieldDecoration(labelText: 'E-mail'),
         ),
         const SizedBox(height: 16),
         TextFormField(
+          controller: _passwordController,
           obscureText: true,
           style: const TextStyle(fontSize: 14),
           decoration: _textFieldDecoration(labelText: 'Senha'),
@@ -143,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
-        onPressed: () {},
+        onPressed: () => Get.to(() => const ForgotPasswordPage()),
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -158,7 +142,19 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildContinueButton() {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        if (hasAccount) {
+          authController.loginWithEmail(
+            _emailController.text,
+            _passwordController.text,
+          );
+        } else {
+          authController.registerWithEmail(
+            _emailController.text,
+            _passwordController.text,
+          );
+        }
+      },
       style: ElevatedButton.styleFrom(
         minimumSize: const Size.fromHeight(50),
         shape: RoundedRectangleBorder(
@@ -166,9 +162,9 @@ class _LoginPageState extends State<LoginPage> {
         ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      child: const Text(
-        'Continuar',
-        style: TextStyle(fontSize: 16, color: Colors.white),
+      child: Text(
+        hasAccount ? 'Entrar' : 'Registrar',
+        style: const TextStyle(fontSize: 16, color: Colors.white),
       ),
     );
   }
@@ -199,10 +195,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildSocialLoginButtons() {
     return Row(
       children: [
-        _buildSocialButton('assets/images/apple.png', 'Apple', () {}),
-        const SizedBox(width: 16),
         _buildSocialButton(
-            'assets/images/google.png', 'Google', _handleGoogleSignIn),
+          'assets/images/google.png',
+          'Google',
+          authController.signInWithGoogle,
+        ),
       ],
     );
   }
