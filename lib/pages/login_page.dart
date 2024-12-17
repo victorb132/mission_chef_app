@@ -12,6 +12,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool hasAccount = true;
+  bool _isLoading = false;
 
   final AuthController authController = Get.find<AuthController>();
   final _emailController = TextEditingController();
@@ -21,6 +22,34 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       hasAccount = !hasAccount;
     });
+  }
+
+  void clearInputs() {
+    _emailController.clear();
+    _passwordController.clear();
+  }
+
+  void _handleLoginOrRegister() async {
+    setState(() {
+      _isLoading = true;
+    });
+    if (hasAccount) {
+      await authController.loginWithEmail(
+        _emailController.text,
+        _passwordController.text,
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+      await authController.registerWithEmail(
+        _emailController.text,
+        _passwordController.text,
+      );
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   InputDecoration _textFieldDecoration({String labelText = ''}) {
@@ -40,26 +69,32 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                const SizedBox(height: 48),
-                _buildHeader(),
-                const SizedBox(height: 48),
-                _buildTextFields(),
-                const SizedBox(height: 24),
-                _buildForgotPassword(),
-                const SizedBox(height: 24),
-                _buildContinueButton(),
-                const SizedBox(height: 32),
-                _buildDividerWithText(),
-                const SizedBox(height: 32),
-                _buildSocialLoginButtons(),
-                const SizedBox(height: 48),
-              ],
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        behavior: HitTestBehavior.opaque,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  const SizedBox(height: 48),
+                  _buildHeader(),
+                  const SizedBox(height: 48),
+                  _buildTextFields(),
+                  const SizedBox(height: 24),
+                  _buildForgotPassword(),
+                  const SizedBox(height: 24),
+                  _buildContinueButton(),
+                  const SizedBox(height: 32),
+                  _buildDividerWithText(),
+                  const SizedBox(height: 32),
+                  _buildSocialLoginButtons(),
+                  const SizedBox(height: 48),
+                ],
+              ),
             ),
           ),
         ),
@@ -143,17 +178,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildContinueButton() {
     return ElevatedButton(
       onPressed: () {
-        if (hasAccount) {
-          authController.loginWithEmail(
-            _emailController.text,
-            _passwordController.text,
-          );
-        } else {
-          authController.registerWithEmail(
-            _emailController.text,
-            _passwordController.text,
-          );
-        }
+        _handleLoginOrRegister();
+        clearInputs();
       },
       style: ElevatedButton.styleFrom(
         minimumSize: const Size.fromHeight(50),
@@ -162,10 +188,19 @@ class _LoginPageState extends State<LoginPage> {
         ),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      child: Text(
-        hasAccount ? 'Entrar' : 'Registrar',
-        style: const TextStyle(fontSize: 16, color: Colors.white),
-      ),
+      child: _isLoading
+          ? const SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                strokeWidth: 1,
+              ),
+            )
+          : Text(
+              hasAccount ? 'Entrar' : 'Registrar',
+              style: const TextStyle(fontSize: 16, color: Colors.white),
+            ),
     );
   }
 

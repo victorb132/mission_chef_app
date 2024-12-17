@@ -44,6 +44,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   final email = _emailController.text.trim();
                   if (email.isNotEmpty) {
                     authController.resetPassword(email);
+                    _emailController.clear();
+                    Get.offAllNamed('/login');
                   } else {
                     Get.snackbar(
                       "Erro",
