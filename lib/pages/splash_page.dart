@@ -9,11 +9,13 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
 
-    if (authController.user.value != null) {
-      Get.offAllNamed('/home');
-    } else {
-      Get.offAllNamed('/login');
-    }
+    Future.delayed(const Duration(seconds: 2), () {
+      if (authController.user.value != null) {
+        Get.offAllNamed('/home');
+      } else {
+        Get.offAllNamed('/login');
+      }
+    });
 
     return const Scaffold(
       body: Center(

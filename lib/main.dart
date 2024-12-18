@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:master_chef_app/controllers/auth_controller.dart';
+import 'package:master_chef_app/pages/challenges_page.dart';
+import 'package:master_chef_app/pages/favorite_page.dart';
 import 'package:master_chef_app/pages/home_page.dart';
 import 'package:master_chef_app/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:master_chef_app/pages/profile_page.dart';
+import 'package:master_chef_app/pages/search_page.dart';
 import 'package:master_chef_app/pages/splash_page.dart';
 import 'firebase_options.dart';
 
@@ -36,6 +40,10 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/splash', page: () => const SplashPage()),
         GetPage(name: '/login', page: () => const LoginPage()),
         GetPage(name: '/home', page: () => const HomePage()),
+        GetPage(name: '/profile', page: () => const ProfilePage()),
+        GetPage(name: '/search', page: () => const SearchPage()),
+        GetPage(name: '/favorite', page: () => const FavoritePage()),
+        GetPage(name: '/challenges', page: () => const ChallengesPage()),
       ],
     );
   }

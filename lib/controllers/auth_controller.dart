@@ -33,7 +33,7 @@ class AuthController extends GetxController {
 
       await _auth.signInWithCredential(credential);
 
-      Get.offAll(() => const HomePage());
+      Get.offAll(() => HomePage());
     } catch (e) {
       Get.snackbar("Erro", "Falha no login: $e");
     }
@@ -45,7 +45,7 @@ class AuthController extends GetxController {
         email: email,
         password: password,
       );
-      Get.offAll(() => const HomePage());
+      Get.offAll(() => HomePage());
     } catch (e) {
       Get.snackbar("Erro no Registro", e.toString());
     }
@@ -54,7 +54,7 @@ class AuthController extends GetxController {
   Future<void> loginWithEmail(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Get.offAll(() => const HomePage());
+      Get.offAll(() => HomePage());
     } catch (e) {
       Get.snackbar("Erro no Login", e.toString());
     }
