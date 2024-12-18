@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:master_chef_app/controllers/auth_controller.dart';
 import 'package:master_chef_app/pages/challenges_page.dart';
 import 'package:master_chef_app/pages/favorite_page.dart';
+import 'package:master_chef_app/pages/food_details_page.dart';
 import 'package:master_chef_app/pages/home_page.dart';
 import 'package:master_chef_app/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/favorite', page: () => const FavoritePage()),
         GetPage(name: '/challenges', page: () => const ChallengesPage()),
         GetPage(name: '/navigation', page: () => const NavigationPage()),
+        GetPage(name: '/food-details', page: () => const FoodDetailsPage()),
       ],
     );
   }
