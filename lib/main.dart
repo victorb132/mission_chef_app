@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:master_chef_app/controllers/auth_controller.dart';
 import 'package:master_chef_app/pages/challenges_page.dart';
@@ -6,6 +7,7 @@ import 'package:master_chef_app/pages/favorite_page.dart';
 import 'package:master_chef_app/pages/home_page.dart';
 import 'package:master_chef_app/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:master_chef_app/pages/navigation_page.dart';
 import 'package:master_chef_app/pages/profile_page.dart';
 import 'package:master_chef_app/pages/search_page.dart';
 import 'package:master_chef_app/pages/splash_page.dart';
@@ -16,6 +18,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  debugPaintSizeEnabled = false;
   runApp(const MyApp());
 }
 
@@ -44,6 +47,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/search', page: () => const SearchPage()),
         GetPage(name: '/favorite', page: () => const FavoritePage()),
         GetPage(name: '/challenges', page: () => const ChallengesPage()),
+        GetPage(name: '/navigation', page: () => const NavigationPage()),
       ],
     );
   }

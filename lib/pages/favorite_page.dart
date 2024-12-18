@@ -5,6 +5,18 @@ class FavoritePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: const Color(0xFF212121),
+      appBar: AppBar(
+        title: const Text("Favoritos"),
+        backgroundColor: const Color(0xFF212121),
+      ),
+      body: const Center(
+        child: Text(
+          "Página Favoritos",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
   }
 }

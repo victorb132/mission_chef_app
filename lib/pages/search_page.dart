@@ -5,6 +5,18 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: const Color(0xFF212121),
+      appBar: AppBar(
+        title: const Text("Search"),
+        backgroundColor: const Color(0xFF212121),
+      ),
+      body: const Center(
+        child: Text(
+          "Página Search",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
   }
 }

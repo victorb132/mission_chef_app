@@ -11,13 +11,14 @@ class SplashPage extends StatelessWidget {
 
     Future.delayed(const Duration(seconds: 2), () {
       if (authController.user.value != null) {
-        Get.offAllNamed('/home');
+        Get.offAllNamed('/navigation');
       } else {
         Get.offAllNamed('/login');
       }
     });
 
     return const Scaffold(
+      backgroundColor: Color(0xFF212121),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -26,14 +27,17 @@ class SplashPage extends StatelessWidget {
               height: 20,
               width: 20,
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 strokeWidth: 1,
               ),
             ),
             SizedBox(height: 16),
             Text(
               "Carregando...",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ],
         ),

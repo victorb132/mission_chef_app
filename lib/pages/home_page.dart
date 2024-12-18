@@ -126,6 +126,7 @@ class _HomePageState extends State<HomePage> {
               _dotsListPopularFood(),
               const SizedBox(height: 16),
               const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Chefes',
@@ -135,6 +136,7 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  Icon(Icons.filter_alt_outlined, color: AppColors.primaryText),
                 ],
               ),
               _filterCategories(),
