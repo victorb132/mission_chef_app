@@ -12,6 +12,7 @@ import 'package:master_chef_app/pages/navigation_page.dart';
 import 'package:master_chef_app/pages/profile_page.dart';
 import 'package:master_chef_app/pages/search_page.dart';
 import 'package:master_chef_app/pages/splash_page.dart';
+import 'package:master_chef_app/pages/timer_page.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/challenges', page: () => const ChallengesPage()),
         GetPage(name: '/navigation', page: () => const NavigationPage()),
         GetPage(name: '/food-details', page: () => const FoodDetailsPage()),
+        GetPage(name: '/timer', page: () => const TimerPage()),
       ],
     );
   }

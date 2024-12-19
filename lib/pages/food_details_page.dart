@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:master_chef_app/utils/app_colors.dart';
 
 class FoodDetailsPage extends StatefulWidget {
@@ -28,7 +29,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF212121),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         toolbarHeight: 24,
         backgroundColor: AppColors.background,
@@ -54,7 +55,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
       children: [
         IconButton(
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
           },
           icon: const Icon(
             Icons.arrow_back_ios_new,
@@ -207,6 +208,22 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                 ],
               ),
               const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Get.toNamed('/timer');
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  backgroundColor: AppColors.accent,
+                ),
+                child: const Text(
+                  'Timer',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ),
               const SizedBox(height: 16),
               _buildSelectionRow(),
               const SizedBox(height: 16),

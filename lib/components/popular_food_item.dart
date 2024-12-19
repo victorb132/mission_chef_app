@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PopularFoodItem extends StatelessWidget {
   final Map<String, String> food;
@@ -9,7 +10,7 @@ class PopularFoodItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/food-details');
+        Get.toNamed('/food-details');
       },
       child: Container(
         width: MediaQuery.of(context).size.width - 36,
