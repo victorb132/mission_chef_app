@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:master_chef_app/components/popular_food_item.dart';
 import 'package:master_chef_app/utils/app_colors.dart';
 
@@ -173,17 +174,22 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: Image.network(
-            'https://i.pravatar.cc/133',
-            fit: BoxFit.cover,
+        GestureDetector(
+          onTap: () {
+            Get.toNamed('/profile');
+          },
+          child: Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            clipBehavior: Clip.hardEdge,
+            child: Image.network(
+              'https://i.pravatar.cc/133',
+              fit: BoxFit.cover,
+            ),
           ),
         )
       ],

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:master_chef_app/controllers/auth_controller.dart';
+import 'package:master_chef_app/interfaces/auth_service_interface.dart';
+import 'package:master_chef_app/interfaces/user_service_interface.dart';
 import 'package:master_chef_app/pages/challenges_page.dart';
 import 'package:master_chef_app/pages/favorite_page.dart';
 import 'package:master_chef_app/pages/food_details_page.dart';
@@ -13,6 +14,8 @@ import 'package:master_chef_app/pages/profile_page.dart';
 import 'package:master_chef_app/pages/search_page.dart';
 import 'package:master_chef_app/pages/splash_page.dart';
 import 'package:master_chef_app/pages/timer_page.dart';
+import 'package:master_chef_app/services/auth_service.dart';
+import 'package:master_chef_app/services/user_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -20,7 +23,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  debugPaintSizeEnabled = false;
   runApp(const MyApp());
 }
 
@@ -29,7 +31,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(AuthController());
+    final IAuthService authService = AuthService();
+    final IUserService userService = UserService();
+
+    Get.put(AuthController(authService, userService));
 
     return GetMaterialApp(
       title: 'Master chef app',
