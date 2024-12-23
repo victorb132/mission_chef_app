@@ -73,6 +73,24 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            if (Get.previousRoute.isEmpty) {
+              Get.offAllNamed(
+                '/navigation',
+              ); // Redireciona para a página inicial
+            } else {
+              Get.back(); // Volta para a página anterior
+            }
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+        ),
+      ),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -84,7 +102,6 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  const SizedBox(height: 48),
                   _buildHeader(),
                   const SizedBox(height: 48),
                   _buildTextFields(),

@@ -14,82 +14,97 @@ class _ProfilePageState extends State<ProfilePage> {
   Map<String, dynamic> user = {};
 
   void getUser() async {
-    final respopnse = await authController.getUserData();
+    final response = await authController.getUserData();
     setState(() {
-      user = respopnse;
+      user = response;
     });
   }
 
   @override
   void initState() {
-    getUser();
     super.initState();
+    getUser();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF212121),
-      appBar: AppBar(
+    return Obx(() {
+      if (authController.isLogged.value == false) {
+        Future.microtask(() => Get.offNamed('/login'));
+        return const SizedBox();
+      }
+
+      return Scaffold(
         backgroundColor: const Color(0xFF212121),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF212121),
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Get.back();
+            },
           ),
-          onPressed: () {
-            Get.back();
-          },
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 150,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: Image.network(
-                    user['photoURL'] ?? 'https://i.pravatar.cc/133',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  user['displayName'] ?? 'Sem nome',
-                  style: const TextStyle(color: Colors.white, fontSize: 24),
-                ),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: () {
-                    authController.signOut();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SingleChildScrollView(
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 150,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(100),
                     ),
-                    backgroundColor: Theme.of(context).primaryColor,
+                    clipBehavior: Clip.hardEdge,
+                    child: authController.user.value?.photoURL != null
+                        ? Image.network(
+                            authController.user.value!.photoURL!,
+                            fit: BoxFit.cover,
+                          )
+                        : const Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 120,
+                          ),
                   ),
-                  child: const Text(
-                    'Logout',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  const SizedBox(height: 10),
+                  Text(
+                    user['displayName'] ?? 'Sem nome',
+                    style: const TextStyle(color: Colors.white, fontSize: 24),
                   ),
-                )
-              ],
+                  const SizedBox(height: 40),
+                  ElevatedButton(
+                    onPressed: () {
+                      authController.signOut();
+                      Get.toNamed(
+                          '/login'); // Redireciona para o login após logout
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
+                    child: const Text(
+                      'Logout',
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

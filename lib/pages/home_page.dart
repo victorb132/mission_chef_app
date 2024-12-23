@@ -110,18 +110,18 @@ class _HomePageState extends State<HomePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hey, Victor',
-              style: TextStyle(
+              'Olá, ${authController.user.value?.displayName ?? ''}',
+              style: const TextStyle(
                 fontSize: 24,
                 color: AppColors.primaryText,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(
+            const Text(
               'Pronto para cozinhar?',
               style: TextStyle(
                 fontSize: 16,

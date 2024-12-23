@@ -4,12 +4,14 @@ import 'package:master_chef_app/interfaces/auth_service_interface.dart';
 import 'package:master_chef_app/interfaces/user_service_interface.dart';
 import 'package:master_chef_app/pages/home_page.dart';
 import 'package:master_chef_app/pages/login_page.dart';
+import 'package:master_chef_app/pages/navigation_page.dart';
 
 class AuthController extends GetxController {
   final IAuthService _authService;
   final IUserService _userService;
 
   Rx<User?> user = Rx<User?>(null);
+  Rx<bool> isLogged = Rx<bool>(false);
 
   AuthController(this._authService, this._userService);
 
@@ -20,6 +22,7 @@ class AuthController extends GetxController {
         ? Stream.value(_authService.getCurrentUser())
         : const Stream.empty());
     if (_authService.getCurrentUser() != null) {
+      isLogged.value = true;
       _userService.saveUserData(_authService.getCurrentUser()!);
     }
   }
@@ -41,8 +44,9 @@ class AuthController extends GetxController {
       await _authService.registerWithEmail(email, password);
       if (_authService.getCurrentUser() != null) {
         await _userService.saveUserData(_authService.getCurrentUser()!);
+        isLogged.value = true;
       }
-      Get.offAll(() => const HomePage());
+      Get.offAll(() => const NavigationPage());
     } catch (e) {
       Get.snackbar("Erro no Registro", e.toString());
     }
@@ -53,14 +57,16 @@ class AuthController extends GetxController {
       await _authService.loginWithEmail(email, password);
       if (_authService.getCurrentUser() != null) {
         await _userService.saveUserData(_authService.getCurrentUser()!);
+        isLogged.value = true;
       }
-      Get.offAll(() => const HomePage());
+      Get.offAll(() => const NavigationPage());
     } catch (e) {
       Get.snackbar("Erro no Login", e.toString());
     }
   }
 
   Future<void> signOut() async {
+    isLogged.value = false;
     await _authService.signOut();
     Get.offAll(() => const LoginPage());
   }
