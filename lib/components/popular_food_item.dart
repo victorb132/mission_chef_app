@@ -20,7 +20,12 @@ class PopularFoodItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+          padding: const EdgeInsets.only(
+            top: 16,
+            bottom: 16,
+            left: 16,
+            right: 10,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

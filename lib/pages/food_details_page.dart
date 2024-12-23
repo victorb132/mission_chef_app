@@ -30,7 +30,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
               _buildHeader(context),
             ],
           ),
-          _buildFakeBottomSheet(context),
+          _buildBottomSheet(context),
         ],
       ),
     );
@@ -65,161 +65,144 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 8.0),
-          child: Icon(
-            Icons.favorite,
-            color: Colors.red,
-            size: 30,
-          ),
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: food['isFavorite']
+              ? const Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                  size: 30,
+                )
+              : const Icon(
+                  Icons.favorite_border,
+                  color: Colors.red,
+                  size: 30,
+                ),
         ),
       ],
     );
   }
 
-  Widget _buildFakeBottomSheet(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.6,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          color: Color(0xFFECECEC), // Cor do "bottom sheet"
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(64),
-            topRight: Radius.circular(64),
+  Widget _buildBottomSheet(BuildContext context) {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.67,
+      minChildSize: 0.67,
+      maxChildSize: 1.0,
+      builder: (context, scrollController) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Color(0xFFECECEC),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(64),
+              topRight: Radius.circular(64),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Center(
+                  child: Container(
+                    width: 60,
+                    height: 3,
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.all(Radius.circular(3)),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: ListView(
+                    controller: scrollController,
+                    children: [
+                      Text(
+                        food['title'],
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 32),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildInfoColumn(
+                            Icons.timer_outlined,
+                            'Preparo',
+                            food['timer'],
+                          ),
+                          _buildInfoColumn(
+                            Icons.star_border,
+                            'Dificuldade',
+                            food['level'],
+                          ),
+                          _buildInfoColumn(
+                            Icons.filter_drama_rounded,
+                            'Receitas',
+                            food['level'],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.toNamed('/timer');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(40),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          backgroundColor: AppColors.accent,
+                        ),
+                        child: const Text(
+                          'Timer',
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      _buildSelectionRow(),
+                      const SizedBox(height: 16),
+                      _buildContent(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildInfoColumn(IconData icon, String label, String value) {
+    return Column(
+      children: [
+        Icon(
+          icon,
+          size: 24,
+          color: const Color(0xFFEA641F),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.black,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: Container(
-                  width: 60,
-                  height: 3,
-                  decoration: const BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.all(Radius.circular(3)),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 32),
-              Text(
-                food['title'],
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 32),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    children: [
-                      const Icon(
-                        Icons.timer_outlined,
-                        size: 24,
-                        color: Color(0xFFEA641F),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${food['timer']}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      const Text(
-                        'Preparo',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFFA6A6A6),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      const Icon(
-                        Icons.star_border,
-                        size: 24,
-                        color: Color(0xFFEA641F),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Nível ${food['level']}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      const Text(
-                        'Dificuldade',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFFA6A6A6),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      const Icon(
-                        Icons.filter_drama_rounded,
-                        size: 24,
-                        color: Color(0xFFEA641F),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Nível ${food['level']}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      const Text(
-                        'Receitas',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFFA6A6A6),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Get.toNamed('/timer');
-                },
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(40),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  backgroundColor: AppColors.accent,
-                ),
-                child: const Text(
-                  'Timer',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
-              const SizedBox(height: 16),
-              _buildSelectionRow(),
-              const SizedBox(height: 16),
-              Expanded(child: _buildContent()),
-            ],
+        const SizedBox(height: 2),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xFFA6A6A6),
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -271,6 +254,8 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
         _selectedIndex == 0 ? food['instructions'] : food['ingredients'];
 
     return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(16),
       itemCount: data.length,
       itemBuilder: (context, index) {

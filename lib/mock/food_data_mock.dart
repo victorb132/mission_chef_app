@@ -26,6 +26,7 @@ final List<Map<String, dynamic>> mockFood = [
     ],
     "isPopular": true,
     "category": "Jacquin",
+    "isFavorite": false,
   },
   {
     "id": "2",
@@ -52,7 +53,8 @@ final List<Map<String, dynamic>> mockFood = [
       "Enrole o sushi firmemente e corte em fatias.",
     ],
     "isPopular": false,
-    "category": "Jacquin"
+    "category": "Jacquin",
+    "isFavorite": false,
   },
   {
     "id": "3",
@@ -76,7 +78,8 @@ final List<Map<String, dynamic>> mockFood = [
       "Asse por 10-12 minutos ou até a massa estar crocante.",
     ],
     "isPopular": true,
-    "category": "Jacquin"
+    "category": "Jacquin",
+    "isFavorite": false,
   },
   {
     "id": "4",
@@ -100,7 +103,8 @@ final List<Map<String, dynamic>> mockFood = [
       "Monte os hambúrgueres com alface, tomate, queijo e molho.",
     ],
     "isPopular": false,
-    "category": "Fogaça"
+    "category": "Fogaça",
+    "isFavorite": false,
   },
   {
     "id": "5",
@@ -122,7 +126,8 @@ final List<Map<String, dynamic>> mockFood = [
       "Monte os tacos com carne, alface, tomate e queijo.",
     ],
     "isPopular": true,
-    "category": "Fogaça"
+    "category": "Fogaça",
+    "isFavorite": true,
   },
   {
     "id": "6",
@@ -146,7 +151,8 @@ final List<Map<String, dynamic>> mockFood = [
       "Adicione as carnes ao feijão e cozinhe por 1 hora.",
     ],
     "isPopular": false,
-    "category": "Paola"
+    "category": "Paola",
+    "isFavorite": false,
   },
   {
     "id": "7",
@@ -166,7 +172,8 @@ final List<Map<String, dynamic>> mockFood = [
       "Misture com o molho Caesar antes de servir.",
     ],
     "isPopular": false,
-    "category": "Helena"
+    "category": "Helena",
+    "isFavorite": false,
   },
   {
     "id": "8",
@@ -188,7 +195,8 @@ final List<Map<String, dynamic>> mockFood = [
       "Adicione o espaguete à pancetta e misture com a mistura de ovos.",
     ],
     "isPopular": true,
-    "category": "Paola"
+    "category": "Paola",
+    "isFavorite": false,
   },
   {
     "id": "9",
@@ -210,6 +218,7 @@ final List<Map<String, dynamic>> mockFood = [
       "Cozinhe em uma frigideira quente até dourar dos dois lados.",
     ],
     "isPopular": false,
-    "category": "Helena"
+    "category": "Helena",
+    "isFavorite": false,
   },
 ];

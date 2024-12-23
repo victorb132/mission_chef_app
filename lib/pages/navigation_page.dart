@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:master_chef_app/pages/challenges_page.dart';
-import 'package:master_chef_app/pages/favorite_page.dart';
+import 'package:master_chef_app/pages/favorites_page.dart';
 import 'package:master_chef_app/pages/home_page.dart';
 import 'package:master_chef_app/pages/search_page.dart';
 
@@ -17,7 +17,7 @@ class _NavigationPageState extends State<NavigationPage> {
   final List<Widget> _pages = [
     const HomePage(),
     const SearchPage(),
-    const FavoritePage(),
+    const FavoritesPage(),
     const ChallengesPage(),
   ];
 
