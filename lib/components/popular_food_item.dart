@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PopularFoodItem extends StatelessWidget {
-  final Map<String, String> food;
+  final Map<String, dynamic> food;
 
   const PopularFoodItem({required this.food, super.key});
 
@@ -10,7 +10,7 @@ class PopularFoodItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed('/food-details');
+        Get.toNamed('/food-details', arguments: food);
       },
       child: Container(
         width: MediaQuery.of(context).size.width - 36,
@@ -20,7 +20,7 @@ class PopularFoodItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -83,8 +83,8 @@ class PopularFoodItem extends StatelessWidget {
                 ],
               ),
               Container(
-                width: 120,
-                height: 300,
+                width: 100,
+                height: 100,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                 ),

@@ -12,19 +12,7 @@ class FoodDetailsPage extends StatefulWidget {
 class _FoodDetailsPageState extends State<FoodDetailsPage> {
   int _selectedIndex = 0;
 
-  final List<String> ingredients = [
-    "2 xícaras de arroz",
-    "1 colher de sopa de óleo",
-    "1 colher de chá de sal",
-    "3 xícaras de água"
-  ];
-
-  final List<String> instructions = [
-    "Lave o arroz.",
-    "Aqueça o óleo em uma panela.",
-    "Adicione o arroz e refogue por 2 minutos.",
-    "Adicione a água e o sal, e cozinhe até secar."
-  ];
+  final food = Get.arguments as Map<String, dynamic>;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +60,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
             ),
             clipBehavior: Clip.hardEdge,
             child: Image.network(
-              'https://www.sidechef.com/recipe/6df5d24c-24a1-417a-b317-f83d949447fc.jpg?d=1408x1120',
+              food['url'],
               fit: BoxFit.cover,
             ),
           ),
@@ -118,35 +106,35 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                 ),
               ),
               const SizedBox(height: 32),
-              const Text(
-                "Ratatouille",
-                style: TextStyle(
+              Text(
+                food['title'],
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
               ),
               const SizedBox(height: 32),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Column(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.timer_outlined,
                         size: 24,
                         color: Color(0xFFEA641F),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
-                        '30 Min',
-                        style: TextStyle(
+                        '${food['timer']}',
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 2),
-                      Text(
+                      const SizedBox(height: 2),
+                      const Text(
                         'Preparo',
                         style: TextStyle(
                           fontSize: 14,
@@ -157,21 +145,21 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                   ),
                   Column(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.star_border,
                         size: 24,
                         color: Color(0xFFEA641F),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
-                        'Nível fácil',
-                        style: TextStyle(
+                        'Nível ${food['level']}',
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 2),
-                      Text(
+                      const SizedBox(height: 2),
+                      const Text(
                         'Dificuldade',
                         style: TextStyle(
                           fontSize: 14,
@@ -182,21 +170,21 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                   ),
                   Column(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.filter_drama_rounded,
                         size: 24,
                         color: Color(0xFFEA641F),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
-                        'Nível Fácil',
-                        style: TextStyle(
+                        'Nível ${food['level']}',
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(height: 2),
-                      Text(
+                      const SizedBox(height: 2),
+                      const Text(
                         'Receitas',
                         style: TextStyle(
                           fontSize: 14,
@@ -279,7 +267,8 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
   }
 
   Widget _buildContent() {
-    final List<String> data = _selectedIndex == 0 ? instructions : ingredients;
+    final List<String> data =
+        _selectedIndex == 0 ? food['instructions'] : food['ingredients'];
 
     return ListView.builder(
       padding: const EdgeInsets.all(16),
