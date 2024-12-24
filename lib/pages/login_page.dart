@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:master_chef_app/controllers/auth_controller.dart';
 import 'package:master_chef_app/pages/forgot_password_page.dart';
+import 'package:master_chef_app/utils/app_colors.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -54,14 +55,16 @@ class _LoginPageState extends State<LoginPage> {
 
   InputDecoration _textFieldDecoration({String labelText = ''}) {
     return InputDecoration(
+      focusColor: Colors.white,
       contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
+        borderSide: BorderSide(color: Colors.white),
       ),
       focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black),
+        borderSide: BorderSide(color: Colors.white),
       ),
       labelText: labelText,
+      labelStyle: const TextStyle(color: AppColors.accent),
       border: const OutlineInputBorder(),
     );
   }
@@ -69,6 +72,25 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            if (Get.previousRoute.isEmpty) {
+              Get.offAllNamed(
+                '/navigation',
+              ); // Redireciona para a página inicial
+            } else {
+              Get.back(); // Volta para a página anterior
+            }
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+        ),
+      ),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -80,7 +102,6 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  const SizedBox(height: 48),
                   _buildHeader(),
                   const SizedBox(height: 48),
                   _buildTextFields(),
@@ -107,7 +128,11 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         Text(
           hasAccount ? 'Entrar' : 'Crie uma conta',
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 16),
         Row(
@@ -115,7 +140,10 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Text(
               hasAccount ? 'Não tem uma conta?' : 'Já tem uma conta?',
-              style: const TextStyle(fontSize: 14),
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+              ),
             ),
             TextButton(
               onPressed: changeToLoginOrRegister,
@@ -126,8 +154,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               child: Text(
                 hasAccount ? 'Registrar' : 'Entrar',
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+                style: const TextStyle(
+                  color: AppColors.accent,
                   fontSize: 14,
                 ),
               ),
@@ -144,15 +172,23 @@ class _LoginPageState extends State<LoginPage> {
         TextFormField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
-          style: const TextStyle(fontSize: 14),
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+          ),
           decoration: _textFieldDecoration(labelText: 'E-mail'),
+          cursorColor: Colors.white,
         ),
         const SizedBox(height: 16),
         TextFormField(
           controller: _passwordController,
           obscureText: true,
-          style: const TextStyle(fontSize: 14),
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+          ),
           decoration: _textFieldDecoration(labelText: 'Senha'),
+          cursorColor: Colors.white,
         ),
       ],
     );
@@ -169,7 +205,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: const Text(
           'Esqueceu a senha?',
-          style: TextStyle(color: Colors.grey, fontSize: 14),
+          style: TextStyle(color: Colors.white, fontSize: 14),
         ),
       ),
     );
@@ -215,7 +251,13 @@ class _LoginPageState extends State<LoginPage> {
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Text('ou faça login com', style: TextStyle(fontSize: 14)),
+          child: Text(
+            'ou faça login com',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.white,
+            ),
+          ),
         ),
         Expanded(
           child: Divider(
