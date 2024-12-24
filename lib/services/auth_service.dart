@@ -50,4 +50,29 @@ class AuthService implements IAuthService {
   User? getCurrentUser() {
     return _auth.currentUser;
   }
+
+  @override
+  Future<void> updateUserData(String field, String value) async {
+    try {
+      User? user = _auth.currentUser;
+
+      if (user == null) {
+        throw Exception("Usuário não logado");
+      }
+
+      if (field == "displayName") {
+        await user.updateDisplayName(value);
+      } else if (field == "email") {
+        await user.verifyBeforeUpdateEmail(value);
+      } else if (field == "photoURL") {
+        await user.updatePhotoURL(value);
+      } else {
+        throw Exception("Campo inválido para atualização");
+      }
+
+      await user.reload();
+    } catch (e) {
+      throw Exception("Erro ao atualizar $field: $e");
+    }
+  }
 }

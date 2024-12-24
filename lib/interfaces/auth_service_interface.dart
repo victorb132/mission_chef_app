@@ -6,5 +6,6 @@ abstract class IAuthService {
   Future<void> loginWithEmail(String email, String password);
   Future<void> resetPassword(String email);
   Future<void> signOut();
+  Future<void> updateUserData(String field, String value);
   User? getCurrentUser();
 }

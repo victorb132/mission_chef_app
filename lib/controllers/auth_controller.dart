@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:master_chef_app/interfaces/auth_service_interface.dart';
 import 'package:master_chef_app/interfaces/user_service_interface.dart';
-import 'package:master_chef_app/pages/home_page.dart';
 import 'package:master_chef_app/pages/login_page.dart';
 import 'package:master_chef_app/pages/navigation_page.dart';
 
@@ -33,7 +32,7 @@ class AuthController extends GetxController {
       if (_authService.getCurrentUser() != null) {
         await _userService.saveUserData(_authService.getCurrentUser()!);
       }
-      Get.offAll(() => const HomePage());
+      Get.offAll(() => const NavigationPage());
     } catch (e) {
       Get.snackbar("Erro", "Falha no login: $e");
     }
@@ -92,5 +91,9 @@ class AuthController extends GetxController {
 
   Future<Map<String, String?>> getUserData() async {
     return await _userService.getUserData();
+  }
+
+  Future<void> updateUser(String field, String value) async {
+    await _authService.updateUserData(field, value);
   }
 }

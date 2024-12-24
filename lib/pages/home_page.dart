@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:master_chef_app/components/popular_food_item.dart';
@@ -18,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   final popularFood =
       mockFood.where((element) => element["isPopular"]).toList();
 
+  User? user;
   List<String> categories = ["Todos"];
 
   int _currentIndex = 0;
@@ -25,11 +27,19 @@ class _HomePageState extends State<HomePage> {
 
   final ScrollController _scrollController = ScrollController();
 
+  void getUser() async {
+    final response = FirebaseAuth.instance.currentUser;
+    setState(() {
+      user = response;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
     _initializeCategories();
+    getUser();
   }
 
   void _initializeCategories() {
@@ -114,7 +124,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Olá, ${authController.user.value?.displayName ?? ''}',
+              'Olá, ${user?.displayName ?? ''}',
               style: const TextStyle(
                 fontSize: 24,
                 color: AppColors.primaryText,
@@ -142,9 +152,9 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(10),
             ),
             // clipBehavior: Clip.hardEdge,
-            child: authController.user.value?.photoURL != null
+            child: user?.photoURL != null
                 ? Image.network(
-                    authController.user.value!.photoURL!,
+                    user?.photoURL ?? '',
                     fit: BoxFit.cover,
                   )
                 : const Icon(

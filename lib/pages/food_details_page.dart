@@ -65,19 +65,26 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: food['isFavorite']
-              ? const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
-                  size: 30,
-                )
-              : const Icon(
-                  Icons.favorite_border,
-                  color: Colors.red,
-                  size: 30,
-                ),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              food['isFavorite'] = !food['isFavorite'];
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: food['isFavorite']
+                ? const Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                    size: 30,
+                  )
+                : const Icon(
+                    Icons.favorite_border,
+                    color: Colors.red,
+                    size: 30,
+                  ),
+          ),
         ),
       ],
     );
