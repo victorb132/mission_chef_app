@@ -46,7 +46,7 @@ class _MysteryChallengePageState extends State<MysteryChallengePage> {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.red,
+            color: Colors.white,
           ),
           onPressed: () {
             Get.back();
