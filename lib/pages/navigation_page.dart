@@ -18,7 +18,7 @@ class _NavigationPageState extends State<NavigationPage> {
     const HomePage(),
     const SearchPage(),
     const FavoritesPage(),
-    const ChallengesPage(),
+    ChallengesPage(),
   ];
 
   void _onItemTapped(int index) {

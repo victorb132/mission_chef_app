@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:master_chef_app/controllers/auth_controller.dart';
 import 'package:master_chef_app/interfaces/auth_service_interface.dart';
 import 'package:master_chef_app/interfaces/user_service_interface.dart';
+import 'package:master_chef_app/pages/challenges/mystery_challenge_page.dart';
 import 'package:master_chef_app/pages/challenges_page.dart';
 import 'package:master_chef_app/pages/favorites_page.dart';
 import 'package:master_chef_app/pages/food_details_page.dart';
@@ -51,10 +52,11 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/profile', page: () => const ProfilePage()),
         GetPage(name: '/search', page: () => const SearchPage()),
         GetPage(name: '/favorite', page: () => const FavoritesPage()),
-        GetPage(name: '/challenges', page: () => const ChallengesPage()),
+        GetPage(name: '/challenges', page: () => ChallengesPage()),
         GetPage(name: '/navigation', page: () => const NavigationPage()),
         GetPage(name: '/food-details', page: () => const FoodDetailsPage()),
         GetPage(name: '/timer', page: () => const TimerPage()),
+        GetPage(name: '/mystery', page: () => const MysteryChallengePage()),
       ],
     );
   }
