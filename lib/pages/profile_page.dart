@@ -240,7 +240,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   onPressed: () {
                     authController.signOut();
                     Get.toNamed(
-                        '/login'); // Redireciona para o login após logout
+                      '/navigation',
+                    ); // Redireciona para o login após logout
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50),

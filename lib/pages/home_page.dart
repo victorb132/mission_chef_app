@@ -145,13 +145,13 @@ class _HomePageState extends State<HomePage> {
             Get.toNamed('/profile');
           },
           child: Container(
-            width: 50,
-            height: 50,
+            width: 60,
+            height: 60,
             decoration: BoxDecoration(
               color: Colors.black45,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(30),
             ),
-            // clipBehavior: Clip.hardEdge,
+            clipBehavior: Clip.hardEdge,
             child: user?.photoURL != null
                 ? Image.network(
                     user?.photoURL ?? '',
@@ -295,36 +295,36 @@ class _HomePageState extends State<HomePage> {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 5),
-                      // const Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     Icon(
-                      //       Icons.star,
-                      //       size: 16,
-                      //       color: AppColors.accent,
-                      //     ),
-                      //     Icon(
-                      //       Icons.star,
-                      //       size: 16,
-                      //       color: AppColors.accent,
-                      //     ),
-                      //     Icon(
-                      //       Icons.star,
-                      //       size: 16,
-                      //       color: AppColors.accent,
-                      //     ),
-                      //     Icon(
-                      //       Icons.star,
-                      //       size: 16,
-                      //       color: AppColors.accent,
-                      //     ),
-                      //     Icon(
-                      //       Icons.star,
-                      //       size: 16,
-                      //       color: AppColors.accent,
-                      //     ),
-                      //   ],
-                      // ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.star,
+                            size: 16,
+                            color: AppColors.accent,
+                          ),
+                          Icon(
+                            Icons.star,
+                            size: 16,
+                            color: AppColors.accent,
+                          ),
+                          Icon(
+                            Icons.star,
+                            size: 16,
+                            color: AppColors.accent,
+                          ),
+                          Icon(
+                            Icons.star,
+                            size: 16,
+                            color: AppColors.accent,
+                          ),
+                          Icon(
+                            Icons.star,
+                            size: 16,
+                            color: AppColors.accent,
+                          ),
+                        ],
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
