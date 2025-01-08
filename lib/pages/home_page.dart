@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> {
               'Pronto para cozinhar?',
               style: TextStyle(
                 fontSize: 16,
-                color: Color(0xFFABABAB),
+                color: AppColors.terciaryText,
               ),
             ),
           ],
@@ -197,7 +197,7 @@ class _HomePageState extends State<HomePage> {
               borderRadius: const BorderRadius.all(Radius.circular(10)),
               color: _currentIndex == index
                   ? AppColors.accent
-                  : const Color(0xFF636363),
+                  : AppColors.secondaryText,
             ),
           );
         },
@@ -336,14 +336,14 @@ class _HomePageState extends State<HomePage> {
                                   food["timer"] ?? '',
                                   style: const TextStyle(
                                     fontSize: 14,
-                                    color: Color(0xFFA8A8A8),
+                                    color: AppColors.terciaryText,
                                   ),
                                 ),
                                 const Text(
                                   'Min',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Color(0xFFA8A8A8),
+                                    color: AppColors.terciaryText,
                                   ),
                                 ),
                               ],
@@ -354,7 +354,7 @@ class _HomePageState extends State<HomePage> {
                             decoration: const BoxDecoration(
                               border: Border(
                                 left: BorderSide(
-                                  color: Color(0xFFA8A8A8),
+                                  color: AppColors.terciaryText,
                                   width: 1,
                                 ),
                               ),
@@ -368,14 +368,14 @@ class _HomePageState extends State<HomePage> {
                                   'Nível',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Color(0xFFA8A8A8),
+                                    color: AppColors.terciaryText,
                                   ),
                                 ),
                                 Text(
                                   food["level"],
                                   style: const TextStyle(
                                     fontSize: 14,
-                                    color: Color(0xFFA8A8A8),
+                                    color: AppColors.terciaryText,
                                   ),
                                 ),
                               ],

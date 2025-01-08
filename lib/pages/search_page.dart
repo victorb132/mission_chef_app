@@ -52,7 +52,7 @@ class _SearchPageState extends State<SearchPage> {
           onChanged: _filterFoods,
           decoration: const InputDecoration(
             hintText: "Buscar receitas...",
-            hintStyle: TextStyle(color: Color(0xFFABABAB)),
+            hintStyle: TextStyle(color: AppColors.terciaryText),
             border: InputBorder.none,
           ),
           style: const TextStyle(color: AppColors.primaryText, fontSize: 18),
@@ -102,7 +102,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                         subtitle: Text(
                           "Tempo: ${food["timer"]} • Nível: ${food["level"]}",
-                          style: const TextStyle(color: Color(0xFFABABAB)),
+                          style: const TextStyle(color: AppColors.terciaryText),
                         ),
                       ),
                     ),

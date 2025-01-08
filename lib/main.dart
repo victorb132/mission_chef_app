@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/profile', page: () => const ProfilePage()),
         GetPage(name: '/search', page: () => const SearchPage()),
         GetPage(name: '/favorite', page: () => const FavoritesPage()),
-        GetPage(name: '/challenges', page: () => ChallengesPage()),
+        GetPage(name: '/challenges', page: () => const ChallengesPage()),
         GetPage(name: '/navigation', page: () => const NavigationPage()),
         GetPage(name: '/food-details', page: () => const FoodDetailsPage()),
         GetPage(name: '/timer', page: () => const TimerPage()),

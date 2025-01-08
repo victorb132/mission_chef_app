@@ -17,8 +17,15 @@ class Challenge {
   });
 }
 
-class ChallengesPage extends StatelessWidget {
-  ChallengesPage({super.key});
+class ChallengesPage extends StatefulWidget {
+  const ChallengesPage({super.key});
+
+  @override
+  State<ChallengesPage> createState() => _ChallengesPageState();
+}
+
+class _ChallengesPageState extends State<ChallengesPage> {
+  int? expandedCardIndex;
 
   final List<Challenge> challenges = [
     Challenge(
@@ -86,29 +93,80 @@ class ChallengesPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
       ),
       body: ListView.builder(
+        padding: const EdgeInsets.all(16.0),
         itemCount: challenges.length,
         itemBuilder: (context, index) {
+          final isExpanded = expandedCardIndex == index;
           final challenge = challenges[index];
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: ListTile(
-              title: Text(
-                challenge.title,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                expandedCardIndex = isExpanded ? null : index;
+              });
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              margin: const EdgeInsets.only(bottom: 16.0),
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: _getCardColor(index),
+                borderRadius: BorderRadius.circular(16.0),
               ),
-              subtitle: Text(
-                challenge.description,
-                style: const TextStyle(fontSize: 14),
-              ),
-              trailing: IconButton(
-                icon: const Icon(Icons.arrow_forward_ios, color: Colors.orange),
-                onPressed: () => challenge.action(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    challenge.title,
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  if (isExpanded)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            challenge.description,
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          ElevatedButton(
+                            onPressed: challenge.action,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black26,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                            ),
+                            child: const Text(
+                              "Ver Desafio",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
               ),
             ),
           );
         },
       ),
     );
+  }
+
+  Color _getCardColor(int index) {
+    final colors = [
+      Colors.white,
+      AppColors.accent,
+    ];
+    return colors[index % colors.length];
   }
 }

@@ -80,7 +80,7 @@ class _TimerPageState extends State<TimerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor:
-          _isRunning ? const Color(0xFFFFF6DC) : AppColors.background,
+          _isRunning ? AppColors.cardBackground : AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(

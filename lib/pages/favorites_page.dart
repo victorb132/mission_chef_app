@@ -87,7 +87,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       subtitle: Text(
                         "Tempo: ${food["timer"]} • Nível: ${food["level"]}",
                         style: const TextStyle(
-                          color: Color(0xFFABABAB),
+                          color: AppColors.terciaryText,
                         ),
                       ),
                       trailing: IconButton(

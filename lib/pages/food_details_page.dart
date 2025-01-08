@@ -98,7 +98,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
       builder: (context, scrollController) {
         return Container(
           decoration: const BoxDecoration(
-            color: Color(0xFFECECEC),
+            color: AppColors.bottomSheetColor,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(64),
               topRight: Radius.circular(64),
@@ -188,11 +188,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
   Widget _buildInfoColumn(IconData icon, String label, String value) {
     return Column(
       children: [
-        Icon(
-          icon,
-          size: 24,
-          color: const Color(0xFFEA641F),
-        ),
+        Icon(icon, size: 24, color: AppColors.accent),
         const SizedBox(height: 4),
         Text(
           value,
@@ -206,7 +202,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
           label,
           style: const TextStyle(
             fontSize: 14,
-            color: Color(0xFFA6A6A6),
+            color: AppColors.secondaryText,
           ),
         ),
       ],

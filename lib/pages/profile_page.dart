@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:master_chef_app/controllers/auth_controller.dart';
+import 'package:master_chef_app/utils/app_colors.dart';
 import 'package:path/path.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -140,9 +141,9 @@ class _ProfilePageState extends State<ProfilePage> {
       }
 
       return Scaffold(
-        backgroundColor: const Color(0xFF212121),
+        backgroundColor: AppColors.background,
         appBar: AppBar(
-          backgroundColor: const Color(0xFF212121),
+          backgroundColor: AppColors.background,
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios_new,
