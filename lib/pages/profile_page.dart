@@ -242,7 +242,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     authController.signOut();
                     Get.toNamed(
                       '/navigation',
-                    ); // Redireciona para o login após logout
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50),
