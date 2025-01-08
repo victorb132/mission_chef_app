@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
     Get.put(AuthController(authService, userService));
 
     return GetMaterialApp(
-      title: 'Master chef app',
+      title: 'Missão Chef',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Colors.black,
