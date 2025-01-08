@@ -5,8 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:master_chef_app/controllers/auth_controller.dart';
-import 'package:master_chef_app/utils/app_colors.dart';
+import 'package:mission_chef_app/controllers/auth_controller.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 import 'package:path/path.dart';
 
 class ProfilePage extends StatefulWidget {

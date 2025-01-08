@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:master_chef_app/interfaces/auth_service_interface.dart';
-import 'package:master_chef_app/interfaces/user_service_interface.dart';
-import 'package:master_chef_app/pages/login_page.dart';
-import 'package:master_chef_app/pages/navigation_page.dart';
+import 'package:mission_chef_app/interfaces/auth_service_interface.dart';
+import 'package:mission_chef_app/interfaces/user_service_interface.dart';
+import 'package:mission_chef_app/pages/login_page.dart';
+import 'package:mission_chef_app/pages/navigation_page.dart';
 
 class AuthController extends GetxController {
   final IAuthService _authService;

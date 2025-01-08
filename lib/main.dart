@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:master_chef_app/controllers/auth_controller.dart';
-import 'package:master_chef_app/interfaces/auth_service_interface.dart';
-import 'package:master_chef_app/interfaces/user_service_interface.dart';
-import 'package:master_chef_app/pages/challenges/mystery_challenge_page.dart';
-import 'package:master_chef_app/pages/challenges_page.dart';
-import 'package:master_chef_app/pages/favorites_page.dart';
-import 'package:master_chef_app/pages/food_details_page.dart';
-import 'package:master_chef_app/pages/home_page.dart';
-import 'package:master_chef_app/pages/login_page.dart';
+import 'package:mission_chef_app/controllers/auth_controller.dart';
+import 'package:mission_chef_app/interfaces/auth_service_interface.dart';
+import 'package:mission_chef_app/interfaces/user_service_interface.dart';
+import 'package:mission_chef_app/pages/challenges/mystery_challenge_page.dart';
+import 'package:mission_chef_app/pages/challenges_page.dart';
+import 'package:mission_chef_app/pages/favorites_page.dart';
+import 'package:mission_chef_app/pages/food_details_page.dart';
+import 'package:mission_chef_app/pages/home_page.dart';
+import 'package:mission_chef_app/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:master_chef_app/pages/navigation_page.dart';
-import 'package:master_chef_app/pages/profile_page.dart';
-import 'package:master_chef_app/pages/search_page.dart';
-import 'package:master_chef_app/pages/timer_page.dart';
-import 'package:master_chef_app/services/auth_service.dart';
-import 'package:master_chef_app/services/user_service.dart';
+import 'package:mission_chef_app/pages/navigation_page.dart';
+import 'package:mission_chef_app/pages/profile_page.dart';
+import 'package:mission_chef_app/pages/search_page.dart';
+import 'package:mission_chef_app/pages/timer_page.dart';
+import 'package:mission_chef_app/services/auth_service.dart';
+import 'package:mission_chef_app/services/user_service.dart';
 import 'firebase_options.dart';
 
 void main() async {

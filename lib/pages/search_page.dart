@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:master_chef_app/mock/food_data_mock.dart';
-import 'package:master_chef_app/utils/app_colors.dart';
+import 'package:mission_chef_app/mock/food_data_mock.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});

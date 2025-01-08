@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:master_chef_app/pages/challenges_page.dart';
-import 'package:master_chef_app/pages/favorites_page.dart';
-import 'package:master_chef_app/pages/home_page.dart';
-import 'package:master_chef_app/pages/search_page.dart';
-import 'package:master_chef_app/utils/app_colors.dart';
+import 'package:mission_chef_app/pages/challenges_page.dart';
+import 'package:mission_chef_app/pages/favorites_page.dart';
+import 'package:mission_chef_app/pages/home_page.dart';
+import 'package:mission_chef_app/pages/search_page.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});

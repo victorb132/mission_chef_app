@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:master_chef_app/components/popular_food_item.dart';
-import 'package:master_chef_app/controllers/auth_controller.dart';
-import 'package:master_chef_app/mock/food_data_mock.dart';
-import 'package:master_chef_app/utils/app_colors.dart';
+import 'package:mission_chef_app/components/popular_food_item.dart';
+import 'package:mission_chef_app/controllers/auth_controller.dart';
+import 'package:mission_chef_app/mock/food_data_mock.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
