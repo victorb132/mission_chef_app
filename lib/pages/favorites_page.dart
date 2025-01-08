@@ -19,9 +19,16 @@ class _FavoritesPageState extends State<FavoritesPage> {
   List<Map<String, dynamic>> get favoriteFoods =>
       mockFood.where((item) => item["isFavorite"] == true).toList();
 
+  void getUser() async {
+    final response = FirebaseAuth.instance.currentUser;
+    setState(() {
+      user = response;
+    });
+  }
+
   @override
   void initState() {
-    user = authController.user.value;
+    getUser();
     super.initState();
   }
 
