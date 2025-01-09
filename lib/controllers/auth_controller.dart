@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mission_chef_app/interfaces/auth_service_interface.dart';
 import 'package:mission_chef_app/interfaces/user_service_interface.dart';
-import 'package:mission_chef_app/pages/navigation_page.dart';
 
 class AuthController extends GetxController {
   final IAuthService _authService;
@@ -31,20 +30,21 @@ class AuthController extends GetxController {
       if (_authService.getCurrentUser() != null) {
         await _userService.saveUserData(_authService.getCurrentUser()!);
       }
-      Get.offAll(() => const NavigationPage());
+      Get.offAllNamed('/navigation');
     } catch (e) {
       Get.snackbar("Erro", "Falha no login: $e");
     }
   }
 
-  Future<void> registerWithEmail(String email, String password) async {
+  Future<void> registerWithEmail(
+      String email, String password, String name) async {
     try {
-      await _authService.registerWithEmail(email, password);
+      await _authService.registerWithEmail(email, password, name);
       if (_authService.getCurrentUser() != null) {
         await _userService.saveUserData(_authService.getCurrentUser()!);
         isLogged.value = true;
       }
-      Get.offAll(() => const NavigationPage());
+      Get.offAllNamed('/navigation');
     } catch (e) {
       Get.snackbar("Erro no Registro", e.toString());
     }
@@ -57,7 +57,7 @@ class AuthController extends GetxController {
         await _userService.saveUserData(_authService.getCurrentUser()!);
         isLogged.value = true;
       }
-      Get.offAll(() => const NavigationPage());
+      Get.offAllNamed('/navigation');
     } catch (e) {
       Get.snackbar("Erro no Login", e.toString());
     }
@@ -66,7 +66,7 @@ class AuthController extends GetxController {
   Future<void> signOut() async {
     isLogged.value = false;
     await _authService.signOut();
-    Get.offAll(() => const NavigationPage());
+    Get.offAllNamed('/navigation');
   }
 
   Future<void> resetPassword(String email) async {

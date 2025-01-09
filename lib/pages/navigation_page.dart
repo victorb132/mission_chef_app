@@ -35,8 +35,8 @@ class _NavigationPageState extends State<NavigationPage> {
       body: _pages[_selectedIndex],
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          splashColor: Colors.transparent, // Remove o efeito de splash
-          highlightColor: Colors.transparent, // Remove o efeito de destaque
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,

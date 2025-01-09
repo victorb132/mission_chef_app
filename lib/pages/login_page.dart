@@ -16,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
 
   final AuthController authController = Get.find<AuthController>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -46,6 +47,7 @@ class _LoginPageState extends State<LoginPage> {
       await authController.registerWithEmail(
         _emailController.text,
         _passwordController.text,
+        _nameController.text,
       );
       setState(() {
         _isLoading = false;
@@ -80,9 +82,9 @@ class _LoginPageState extends State<LoginPage> {
             if (Get.previousRoute.isEmpty) {
               Get.offAllNamed(
                 '/navigation',
-              ); // Redireciona para a página inicial
+              );
             } else {
-              Get.back(); // Volta para a página anterior
+              Get.back();
             }
           },
           icon: const Icon(
@@ -104,6 +106,18 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   _buildHeader(),
                   const SizedBox(height: 48),
+                  if (!hasAccount) ...[
+                    TextFormField(
+                      controller: _nameController,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                      decoration: _textFieldDecoration(labelText: 'Nome'),
+                      cursorColor: Colors.white,
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                   _buildTextFields(),
                   const SizedBox(height: 24),
                   _buildForgotPassword(),

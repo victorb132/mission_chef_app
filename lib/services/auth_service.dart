@@ -23,11 +23,14 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<void> registerWithEmail(String email, String password) async {
+  Future<void> registerWithEmail(
+      String email, String password, String name) async {
     await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+
+    await updateUserData("displayName", name);
   }
 
   @override
