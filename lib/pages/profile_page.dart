@@ -93,7 +93,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    signingOut = false;
     getUser();
   }
 
@@ -238,7 +237,9 @@ class _ProfilePageState extends State<ProfilePage> {
               TextButton(
                 onPressed: () {
                   authController.signOut();
-                  signingOut = true;
+                  setState(() {
+                    signingOut = true;
+                  });
                 },
                 child: const Text(
                   'Sair',

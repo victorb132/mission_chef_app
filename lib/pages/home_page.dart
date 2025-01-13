@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mission_chef_app/components/popular_food_item.dart';
 import 'package:mission_chef_app/controllers/auth_controller.dart';
+import 'package:mission_chef_app/controllers/meal_controller.dart';
 import 'package:mission_chef_app/mock/food_data_mock.dart';
 import 'package:mission_chef_app/utils/app_colors.dart';
 
@@ -15,6 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   AuthController authController = Get.find<AuthController>();
+  final MealController mealController = Get.find();
 
   final popularFood =
       mockFood.where((element) => element["isPopular"]).toList();
@@ -39,6 +41,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _scrollController.addListener(_onScroll);
     _initializeCategories();
+    mealController.fetchMeals();
     getUser();
   }
 
@@ -254,161 +257,181 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _listFilteredFoods(List<Map<String, dynamic>> filteredFoods) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.only(top: 60, bottom: 30),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 80,
-        childAspectRatio: 0.8,
-      ),
-      itemBuilder: (context, index) {
-        final food = filteredFoods[index];
+    return Obx(() {
+      if (mealController.isLoading.value) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
 
-        return GestureDetector(
-          onTap: () {
-            Get.toNamed('/food-details', arguments: food);
-          },
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.cardBackground,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 48),
-                      Text(
-                        food["title"] ?? '',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: AppColors.primaryText,
+      if (mealController.meals.isEmpty) {
+        return const Center(
+          child: Text(
+            'Nenhum prato encontrado.',
+            style: TextStyle(
+              color: AppColors.secondaryText,
+            ),
+          ),
+        );
+      }
+
+      return GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(top: 60, bottom: 30),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 80,
+          childAspectRatio: 0.8,
+        ),
+        itemCount: mealController.meals.length,
+        itemBuilder: (context, index) {
+          final meal = mealController.meals[index];
+
+          return GestureDetector(
+            onTap: () {
+              Get.toNamed('/food-details', arguments: meal);
+            },
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.cardBackground,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 48),
+                        Text(
+                          meal.name,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: AppColors.primaryText,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 5),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.star,
-                            size: 16,
-                            color: AppColors.accent,
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 16,
-                            color: AppColors.accent,
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 16,
-                            color: AppColors.accent,
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 16,
-                            color: AppColors.accent,
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 16,
-                            color: AppColors.accent,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  food["timer"] ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: AppColors.terciaryText,
-                                  ),
-                                ),
-                                const Text(
-                                  'Min',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppColors.terciaryText,
-                                  ),
-                                ),
-                              ],
+                        const SizedBox(height: 5),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.star,
+                              size: 16,
+                              color: AppColors.accent,
                             ),
-                          ),
-                          Container(
-                            height: 20,
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                left: BorderSide(
-                                  color: AppColors.terciaryText,
-                                  width: 1,
+                            Icon(
+                              Icons.star,
+                              size: 16,
+                              color: AppColors.accent,
+                            ),
+                            Icon(
+                              Icons.star,
+                              size: 16,
+                              color: AppColors.accent,
+                            ),
+                            Icon(
+                              Icons.star,
+                              size: 16,
+                              color: AppColors.accent,
+                            ),
+                            Icon(
+                              Icons.star,
+                              size: 16,
+                              color: AppColors.accent,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    meal.id.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: AppColors.terciaryText,
+                                    ),
+                                  ),
+                                  const Text(
+                                    'Min',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: AppColors.terciaryText,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 20,
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  left: BorderSide(
+                                    color: AppColors.terciaryText,
+                                    width: 1,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const Text(
-                                  'Nível',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppColors.terciaryText,
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  const Text(
+                                    'Nível',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: AppColors.terciaryText,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  food["level"],
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: AppColors.terciaryText,
+                                  Text(
+                                    meal.category,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: AppColors.terciaryText,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                top: -50,
-                left: 32,
-                child: Container(
-                  width: 110,
-                  height: 110,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: Colors.white, width: 2), // Borda
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: Image.network(
-                    food["url"] ?? '',
-                    fit: BoxFit.cover,
+                Positioned(
+                  top: -50,
+                  left: 32,
+                  child: Container(
+                    width: 110,
+                    height: 110,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      border:
+                          Border.all(color: Colors.white, width: 2), // Borda
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: Image.network(
+                      meal.thumbnail,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
-      itemCount: filteredFoods.length,
-    );
+              ],
+            ),
+          );
+        },
+      );
+    });
   }
 }
