@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:master_chef_app/interfaces/auth_service_interface.dart';
+import 'package:mission_chef_app/interfaces/auth_service_interface.dart';
 
 class AuthService implements IAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -23,11 +23,14 @@ class AuthService implements IAuthService {
   }
 
   @override
-  Future<void> registerWithEmail(String email, String password) async {
+  Future<void> registerWithEmail(
+      String email, String password, String name) async {
     await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+
+    await updateUserData("displayName", name);
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:math';
 
-import 'package:master_chef_app/utils/app_colors.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 
 class MysteryChallengePage extends StatefulWidget {
   const MysteryChallengePage({super.key});
@@ -46,7 +46,7 @@ class _MysteryChallengePageState extends State<MysteryChallengePage> {
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: Colors.red,
+            color: Colors.white,
           ),
           onPressed: () {
             Get.back();

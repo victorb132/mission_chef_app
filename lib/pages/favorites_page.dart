@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:master_chef_app/controllers/auth_controller.dart';
-import 'package:master_chef_app/mock/food_data_mock.dart';
-import 'package:master_chef_app/utils/app_colors.dart';
+import 'package:mission_chef_app/controllers/auth_controller.dart';
+import 'package:mission_chef_app/mock/food_data_mock.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({super.key});
@@ -19,9 +19,16 @@ class _FavoritesPageState extends State<FavoritesPage> {
   List<Map<String, dynamic>> get favoriteFoods =>
       mockFood.where((item) => item["isFavorite"] == true).toList();
 
+  void getUser() async {
+    final response = FirebaseAuth.instance.currentUser;
+    setState(() {
+      user = response;
+    });
+  }
+
   @override
   void initState() {
-    user = authController.user.value;
+    getUser();
     super.initState();
   }
 
@@ -87,7 +94,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                       subtitle: Text(
                         "Tempo: ${food["timer"]} • Nível: ${food["level"]}",
                         style: const TextStyle(
-                          color: Color(0xFFABABAB),
+                          color: AppColors.terciaryText,
                         ),
                       ),
                       trailing: IconButton(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:master_chef_app/pages/challenges_page.dart';
-import 'package:master_chef_app/pages/favorites_page.dart';
-import 'package:master_chef_app/pages/home_page.dart';
-import 'package:master_chef_app/pages/search_page.dart';
+import 'package:mission_chef_app/pages/challenges_page.dart';
+import 'package:mission_chef_app/pages/favorites_page.dart';
+import 'package:mission_chef_app/pages/home_page.dart';
+import 'package:mission_chef_app/pages/search_page.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -18,7 +19,7 @@ class _NavigationPageState extends State<NavigationPage> {
     const HomePage(),
     const SearchPage(),
     const FavoritesPage(),
-    ChallengesPage(),
+    const ChallengesPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -30,20 +31,20 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF212121),
+      backgroundColor: AppColors.background,
       body: _pages[_selectedIndex],
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          splashColor: Colors.transparent, // Remove o efeito de splash
-          highlightColor: Colors.transparent, // Remove o efeito de destaque
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
         ),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
-          backgroundColor: const Color(0xFF212121),
-          selectedItemColor: const Color(0xFFEA641F),
-          unselectedItemColor: const Color(0xFFA8A8A8),
+          backgroundColor: AppColors.background,
+          selectedItemColor: AppColors.accent,
+          unselectedItemColor: AppColors.terciaryText,
           showSelectedLabels: false,
           showUnselectedLabels: false,
           items: [
@@ -80,7 +81,7 @@ class _NavigationPageState extends State<NavigationPage> {
             width: 6,
             height: 6,
             decoration: const BoxDecoration(
-              color: Color(0xFFEA641F),
+              color: AppColors.accent,
               shape: BoxShape.circle,
             ),
           ),

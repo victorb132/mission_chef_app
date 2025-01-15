@@ -5,7 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:master_chef_app/controllers/auth_controller.dart';
+import 'package:mission_chef_app/controllers/auth_controller.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 import 'package:path/path.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -18,6 +19,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final AuthController authController = Get.find<AuthController>();
   User? user;
+  bool signingOut = false;
 
   void getUser() async {
     final response = FirebaseAuth.instance.currentUser;
@@ -33,7 +35,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> updateProfilePicture() async {
     try {
-      // Permite ao usuário escolher entre galeria ou câmera
       final ImagePicker picker = ImagePicker();
       final XFile? pickedFile = await picker.pickImage(
         source: await _getImageSource(),
@@ -56,7 +57,6 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  /// Permite escolher entre galeria ou câmera
   Future<ImageSource> _getImageSource() async {
     return await showDialog(
       context: Get.context!,
@@ -76,17 +76,14 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  /// Faz upload da imagem para o Firebase Storage
   Future<String> _uploadImage(File file) async {
     try {
-      String fileName = basename(file.path); // Nome do arquivo
+      String fileName = basename(file.path);
       Reference storageRef = FirebaseStorage.instance.ref().child(
           'profile_pictures/${authController.user.value?.uid ?? ''}/$fileName');
 
-      // Faz o upload do arquivo
       await storageRef.putFile(file);
 
-      // Obtém a URL pública da imagem
       return await storageRef.getDownloadURL();
     } catch (e) {
       throw Exception("Erro ao fazer upload da imagem: $e");
@@ -101,48 +98,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    void showEditDialog(String field, String title, String currentValue) {
-      final TextEditingController controller = TextEditingController();
-      controller.text = currentValue;
-
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("Editar $title"),
-          content: TextField(
-            controller: controller,
-            decoration: InputDecoration(
-              labelText: title,
-              border: const OutlineInputBorder(),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Get.back(),
-              child: const Text("Cancelar"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                updateUser(field, controller.text);
-                Get.back();
-              },
-              child: const Text("Salvar"),
-            ),
-          ],
-        ),
-      );
-    }
-
     return Obx(() {
-      if (authController.isLogged.value == false) {
+      if (authController.isLogged.value == false && signingOut == false) {
         Future.microtask(() => Get.offNamed('/login'));
-        return const SizedBox();
+        return const SizedBox.shrink();
       }
 
       return Scaffold(
-        backgroundColor: const Color(0xFF212121),
+        backgroundColor: AppColors.background,
         appBar: AppBar(
-          backgroundColor: const Color(0xFF212121),
+          backgroundColor: AppColors.accent,
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios_new,
@@ -154,108 +119,134 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           title: const Text(
             "Perfil",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 34,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20),
-                Stack(
-                  alignment: Alignment.bottomRight,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  bottom: 30,
+                  top: 20,
+                ),
+                decoration: const BoxDecoration(
+                  color: AppColors.accent,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(50),
+                    bottomRight: Radius.circular(50),
+                  ),
+                ),
+                child: Column(
                   children: [
-                    Container(
-                      width: 150,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      clipBehavior: Clip.hardEdge,
-                      child: user?.photoURL != null
-                          ? Image.network(
-                              user?.photoURL ?? '',
-                              fit: BoxFit.cover,
-                            )
-                          : const Icon(
-                              Icons.person,
+                    Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Container(
+                          width: 110,
+                          height: 110,
+                          decoration: BoxDecoration(
+                            border: Border.all(
                               color: Colors.white,
-                              size: 120,
+                              width: 3,
                             ),
+                            shape: BoxShape.circle,
+                          ),
+                          clipBehavior: Clip.hardEdge,
+                          child: ClipOval(
+                            child: user?.photoURL != null
+                                ? Image.network(
+                                    user?.photoURL ?? '',
+                                    fit: BoxFit.cover,
+                                  )
+                                : const Icon(
+                                    Icons.person,
+                                    color: Colors.white,
+                                    size: 60,
+                                  ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: -15,
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: AppColors.background,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 2,
+                              ),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 15,
+                              ),
+                              onPressed: () async {
+                                try {
+                                  await updateProfilePicture();
+                                  Get.snackbar(
+                                    "Sucesso",
+                                    "Foto de perfil atualizada!",
+                                  );
+                                } catch (e) {
+                                  Get.snackbar(
+                                    "Erro",
+                                    e.toString(),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.edit,
+                    const SizedBox(height: 20),
+                    Text(
+                      user?.displayName ?? '',
+                      style: const TextStyle(
                         color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
-                      onPressed: () async {
-                        try {
-                          await updateProfilePicture();
-                          Get.snackbar("Sucesso", "Foto de perfil atualizada!");
-                        } catch (e) {
-                          Get.snackbar("Erro", e.toString());
-                        }
-                      },
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      user?.email ?? '',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
-                ListTile(
-                  leading: const Icon(Icons.person, color: Colors.white),
-                  title: Text(
-                    user?.displayName ?? '',
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.white),
-                    onPressed: () {
-                      showEditDialog(
-                        "displayName",
-                        "Nome",
-                        user?.displayName ?? '',
-                      );
-                    },
-                  ),
+              ),
+              const SizedBox(height: 40),
+              TextButton(
+                onPressed: () {
+                  authController.signOut();
+                  setState(() {
+                    signingOut = true;
+                  });
+                },
+                child: const Text(
+                  'Sair',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
-                const Divider(color: Colors.white54),
-                ListTile(
-                  leading: const Icon(Icons.email, color: Colors.white),
-                  title: Text(
-                    user?.email ?? '',
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit, color: Colors.white),
-                    onPressed: () {
-                      showEditDialog("email", "E-mail", user?.email ?? '');
-                    },
-                  ),
-                ),
-                const Divider(color: Colors.white54),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: () {
-                    authController.signOut();
-                    Get.toNamed(
-                        '/login'); // Redireciona para o login após logout
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
-                  child: const Text(
-                    'Logout',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );

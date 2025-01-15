@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:master_chef_app/utils/app_colors.dart';
+import 'package:lottie/lottie.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 
 class TimerPage extends StatefulWidget {
   const TimerPage({super.key});
@@ -13,17 +14,22 @@ class TimerPage extends StatefulWidget {
 class _TimerPageState extends State<TimerPage> {
   int _hours = 0;
   int _minutes = 0;
+  int _seconds = 0;
+  int _totalSeconds = 0;
   Timer? _timer;
   bool _isRunning = false;
-  int _totalSeconds = 0;
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   void _startStopTimer() {
     if (_isRunning) {
       _timer?.cancel();
     } else {
-      if (_totalSeconds == 0) {
-        _totalSeconds = (_hours * 3600) + (_minutes * 60);
-      }
+      _totalSeconds = (_hours * 3600) + (_minutes * 60) + _seconds;
 
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         setState(() {
@@ -36,33 +42,8 @@ class _TimerPageState extends State<TimerPage> {
         });
       });
     }
-
     setState(() {
       _isRunning = !_isRunning;
-    });
-  }
-
-  void _incrementHours() {
-    setState(() {
-      _hours = (_hours + 1) % 24;
-    });
-  }
-
-  void _decrementHours() {
-    setState(() {
-      _hours = (_hours - 1 + 24) % 24;
-    });
-  }
-
-  void _incrementMinutes() {
-    setState(() {
-      _minutes = (_minutes + 1) % 60;
-    });
-  }
-
-  void _decrementMinutes() {
-    setState(() {
-      _minutes = (_minutes - 1 + 60) % 60;
     });
   }
 
@@ -71,120 +52,94 @@ class _TimerPageState extends State<TimerPage> {
     final int minutes = (_totalSeconds % 3600) ~/ 60;
     final int seconds = _totalSeconds % 60;
 
-    return '${hours.toString().padLeft(2, '0')} : '
-        '${minutes.toString().padLeft(2, '0')} : '
-        '${seconds.toString().padLeft(2, '0')}';
+    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          _isRunning ? const Color(0xFFFFF6DC) : AppColors.background,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.background,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new,
-            color: _isRunning ? Colors.black : Colors.white,
+            color: Colors.white,
           ),
           onPressed: () {
             Get.back();
           },
         ),
       ),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Título superior
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "hr",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Text(
+                _formattedTime(),
+                style: const TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
-                SizedBox(width: 80),
-                Text(
-                  "min",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ],
+              ),
             ),
-            const SizedBox(height: 10),
-
-            // Controles de horas, minutos e segundos
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Horas
-                _timeControl(_hours, _incrementHours, _decrementHours),
-                const SizedBox(width: 20),
-                Text(
-                  ":",
-                  style: TextStyle(
-                    fontSize: 48,
-                    fontWeight: FontWeight.bold,
-                    color: _isRunning ? Colors.black : Colors.white,
-                  ),
-                ),
-                const SizedBox(width: 20),
-                // Minutos
-                _timeControl(_minutes, _incrementMinutes, _decrementMinutes),
-              ],
-            ),
-
-            const SizedBox(height: 50),
-
-            // Botão de START/STOP
-            GestureDetector(
-              onTap: _startStopTimer,
-              child: Column(
+            _isRunning
+                ? Lottie.asset('assets/animations/timer.json', height: 200)
+                : const SizedBox(height: 20),
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: AppColors.accent,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Ícone da panela
-                      Icon(
-                        Icons.ramen_dining_outlined,
-                        size: 180,
-                        color: _isRunning ? Colors.red : Colors.white24,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 60),
-                        child: Text(
-                          _isRunning ? "STOP" : "START",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: _isRunning ? Colors.black : Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
+                  _buildTimePicker(
+                    "Horas",
+                    24,
+                    (index) {
+                      setState(() {
+                        _hours = index;
+                      });
+                    },
                   ),
-                  if (_isRunning) ...[
-                    const SizedBox(height: 10),
-                    const Icon(
-                      Icons.local_fire_department,
-                      color: Colors.red,
-                      size: 48,
-                    ),
-                  ],
+                  _buildTimePicker(
+                    "Minutos",
+                    60,
+                    (index) {
+                      setState(() {
+                        _minutes = index;
+                      });
+                    },
+                  ),
+                  _buildTimePicker(
+                    "Segundos",
+                    60,
+                    (index) {
+                      setState(() {
+                        _seconds = index;
+                      });
+                    },
+                  ),
                 ],
               ),
             ),
-
-            const SizedBox(height: 20),
-
-            // Tempo Atual
-            Text(
-              _formattedTime(),
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-                color: _isRunning ? Colors.black87 : Colors.white,
+            const SizedBox(height: 50),
+            GestureDetector(
+              onTap: _startStopTimer,
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                child: Icon(
+                  _isRunning ? Icons.pause : Icons.play_arrow,
+                  color: AppColors.accent,
+                  size: 60,
+                ),
               ),
             ),
           ],
@@ -193,35 +148,40 @@ class _TimerPageState extends State<TimerPage> {
     );
   }
 
-  Widget _timeControl(
-    int value,
-    VoidCallback onIncrement,
-    VoidCallback onDecrement,
-  ) {
+  Widget _buildTimePicker(
+      String label, int count, ValueChanged<int> onSelectedItemChanged) {
     return Column(
       children: [
-        IconButton(
-          onPressed: onIncrement,
-          icon: Icon(
-            Icons.arrow_drop_up,
-            size: 36,
-            color: _isRunning ? Colors.black : Colors.white,
-          ),
-        ),
         Text(
-          value.toString().padLeft(2, '0'),
-          style: TextStyle(
-            fontSize: 48,
-            fontWeight: FontWeight.bold,
-            color: _isRunning ? Colors.black : Colors.white,
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
           ),
         ),
-        IconButton(
-          onPressed: onDecrement,
-          icon: Icon(
-            Icons.arrow_drop_down,
-            size: 36,
-            color: _isRunning ? Colors.black : Colors.white,
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 100,
+          width: 60,
+          child: ListWheelScrollView.useDelegate(
+            itemExtent: 40,
+            diameterRatio: 1.2,
+            perspective: 0.005,
+            onSelectedItemChanged: onSelectedItemChanged,
+            physics: const FixedExtentScrollPhysics(),
+            childDelegate: ListWheelChildBuilderDelegate(
+              builder: (context, index) => Center(
+                child: Text(
+                  index.toString().padLeft(2, '0'),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              childCount: count,
+            ),
           ),
         ),
       ],

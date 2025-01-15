@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mission_chef_app/models/meal_model.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 
 class PopularFoodItem extends StatelessWidget {
-  final Map<String, dynamic> food;
+  final MealModel food;
 
   const PopularFoodItem({required this.food, super.key});
 
@@ -16,7 +18,7 @@ class PopularFoodItem extends StatelessWidget {
         width: MediaQuery.of(context).size.width - 36,
         margin: const EdgeInsets.only(right: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFF313131),
+          color: AppColors.cardBackground,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
@@ -37,17 +39,17 @@ class PopularFoodItem extends StatelessWidget {
                     'Popular Para Janta',
                     style: TextStyle(
                       fontSize: 18,
-                      color: Color(0xFFAAAAAA),
+                      color: AppColors.secondaryText,
                     ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        food["title"] ?? '',
+                        food.name,
                         style: const TextStyle(
                           fontSize: 20,
-                          color: Color(0xFFF9F9F9),
+                          color: AppColors.primaryText,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -57,28 +59,28 @@ class PopularFoodItem extends StatelessWidget {
                           const Icon(
                             Icons.timer_outlined,
                             size: 16,
-                            color: Color(0xFFEA641F),
+                            color: AppColors.accent,
                           ),
                           const SizedBox(width: 2),
                           Text(
-                            food["timer"] ?? '',
+                            food.id,
                             style: const TextStyle(
                               fontSize: 16,
-                              color: Color(0xFFA8A8A8),
+                              color: AppColors.terciaryText,
                             ),
                           ),
                           const SizedBox(width: 10),
                           const Icon(
                             Icons.filter_drama_rounded,
                             size: 16,
-                            color: Color(0xFFEA641F),
+                            color: AppColors.accent,
                           ),
                           const SizedBox(width: 2),
                           Text(
-                            food["level"] ?? '',
+                            food.category,
                             style: const TextStyle(
                               fontSize: 16,
-                              color: Color(0xFFA8A8A8),
+                              color: AppColors.terciaryText,
                             ),
                           ),
                         ],
@@ -95,7 +97,7 @@ class PopularFoodItem extends StatelessWidget {
                 ),
                 clipBehavior: Clip.hardEdge,
                 child: Image.network(
-                  food["url"] ?? '',
+                  food.thumbnail,
                   fit: BoxFit.cover,
                 ),
               ),

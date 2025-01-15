@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:master_chef_app/controllers/auth_controller.dart';
-import 'package:master_chef_app/pages/forgot_password_page.dart';
-import 'package:master_chef_app/utils/app_colors.dart';
+import 'package:mission_chef_app/controllers/auth_controller.dart';
+import 'package:mission_chef_app/pages/forgot_password_page.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,8 +14,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool hasAccount = true;
   bool _isLoading = false;
+  bool isObscureText = true;
 
   final AuthController authController = Get.find<AuthController>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -46,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
       await authController.registerWithEmail(
         _emailController.text,
         _passwordController.text,
+        _nameController.text,
       );
       setState(() {
         _isLoading = false;
@@ -53,19 +56,18 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  InputDecoration _textFieldDecoration({String labelText = ''}) {
+  InputDecoration _textFieldDecoration(
+      {String labelText = '', Widget? suffixIcon}) {
     return InputDecoration(
-      focusColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.white),
-      ),
-      focusedBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.white),
-      ),
+      suffixIcon: suffixIcon,
       labelText: labelText,
-      labelStyle: const TextStyle(color: AppColors.accent),
-      border: const OutlineInputBorder(),
+      labelStyle: const TextStyle(color: Colors.white),
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.accent),
+      ),
+      enabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.secondaryText),
+      ),
     );
   }
 
@@ -80,9 +82,9 @@ class _LoginPageState extends State<LoginPage> {
             if (Get.previousRoute.isEmpty) {
               Get.offAllNamed(
                 '/navigation',
-              ); // Redireciona para a página inicial
+              );
             } else {
-              Get.back(); // Volta para a página anterior
+              Get.back();
             }
           },
           icon: const Icon(
@@ -104,6 +106,18 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   _buildHeader(),
                   const SizedBox(height: 48),
+                  if (!hasAccount) ...[
+                    TextFormField(
+                      controller: _nameController,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                      decoration: _textFieldDecoration(labelText: 'Nome'),
+                      cursorColor: Colors.white,
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                   _buildTextFields(),
                   const SizedBox(height: 24),
                   _buildForgotPassword(),
@@ -182,12 +196,25 @@ class _LoginPageState extends State<LoginPage> {
         const SizedBox(height: 16),
         TextFormField(
           controller: _passwordController,
-          obscureText: true,
+          obscureText: isObscureText ? true : false,
           style: const TextStyle(
             fontSize: 14,
             color: Colors.white,
           ),
-          decoration: _textFieldDecoration(labelText: 'Senha'),
+          decoration: _textFieldDecoration(
+            labelText: 'Senha',
+            suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+                  isObscureText = !isObscureText;
+                });
+              },
+              icon: Icon(
+                isObscureText ? Icons.visibility_off : Icons.visibility,
+                color: Colors.white,
+              ),
+            ),
+          ),
           cursorColor: Colors.white,
         ),
       ],
@@ -222,7 +249,7 @@ class _LoginPageState extends State<LoginPage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: AppColors.accent,
       ),
       child: _isLoading
           ? const SizedBox(
@@ -289,7 +316,7 @@ class _LoginPageState extends State<LoginPage> {
           minimumSize: const Size.fromHeight(50),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          backgroundColor: Colors.black,
+          backgroundColor: AppColors.cardBackground,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

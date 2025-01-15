@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:master_chef_app/mock/food_data_mock.dart';
-import 'package:master_chef_app/utils/app_colors.dart';
+import 'package:mission_chef_app/controllers/meal_controller.dart';
+import 'package:mission_chef_app/models/meal_model.dart';
+import 'package:mission_chef_app/utils/app_colors.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -11,26 +12,27 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  List<Map<String, dynamic>> filteredFoods = [];
+  final MealController mealController = Get.find<MealController>();
+  List<MealModel> filteredFoods = [];
   final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    filteredFoods = mockFood;
+    filteredFoods = mealController.meals;
   }
 
   void _filterFoods(String query) {
     if (query.isEmpty) {
       setState(() {
-        filteredFoods = mockFood;
+        filteredFoods = mealController.meals;
       });
     } else {
       setState(
         () {
-          filteredFoods = mockFood
+          filteredFoods = mealController.meals
               .where(
-                (item) => item["title"].toString().toLowerCase().contains(
+                (item) => item.name.toString().toLowerCase().contains(
                       query.toLowerCase(),
                     ),
               )
@@ -52,7 +54,7 @@ class _SearchPageState extends State<SearchPage> {
           onChanged: _filterFoods,
           decoration: const InputDecoration(
             hintText: "Buscar receitas...",
-            hintStyle: TextStyle(color: Color(0xFFABABAB)),
+            hintStyle: TextStyle(color: AppColors.terciaryText),
             border: InputBorder.none,
           ),
           style: const TextStyle(color: AppColors.primaryText, fontSize: 18),
@@ -87,22 +89,22 @@ class _SearchPageState extends State<SearchPage> {
                         leading: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.network(
-                            food["url"] ?? '',
+                            food.thumbnail,
                             width: 60,
                             height: 60,
                             fit: BoxFit.cover,
                           ),
                         ),
                         title: Text(
-                          food["title"] ?? '',
+                          food.name,
                           style: const TextStyle(
                             color: AppColors.primaryText,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         subtitle: Text(
-                          "Tempo: ${food["timer"]} • Nível: ${food["level"]}",
-                          style: const TextStyle(color: Color(0xFFABABAB)),
+                          "Tempo: ${food.id} • Nível: ${food.category}",
+                          style: const TextStyle(color: AppColors.terciaryText),
                         ),
                       ),
                     ),
