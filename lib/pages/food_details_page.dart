@@ -286,7 +286,10 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
   }
 
   Widget _buildContentInstructions() {
-    return Text(food.instructions);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Text(food.instructions),
+    );
   }
 
   Widget _buildContentIngredients() {
