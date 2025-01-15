@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mission_chef_app/controllers/meal_controller.dart';
 import 'package:mission_chef_app/models/meal_model.dart';
 import 'package:mission_chef_app/utils/app_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FoodDetailsPage extends StatefulWidget {
   const FoodDetailsPage({super.key});
@@ -11,6 +13,7 @@ class FoodDetailsPage extends StatefulWidget {
 }
 
 class _FoodDetailsPageState extends State<FoodDetailsPage> {
+  final MealController mealController = Get.find<MealController>();
   int _selectedIndex = 0;
 
   final food = Get.arguments as MealModel;
@@ -171,10 +174,39 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ),
+                      food.youtube != ''
+                          ? ElevatedButton(
+                              onPressed: () async {
+                                final Uri url = Uri.parse(food.youtube);
+                                try {
+                                  await launchUrl(url);
+                                } catch (e) {
+                                  throw 'Could not launch $url';
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size.fromHeight(40),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                backgroundColor: AppColors.background,
+                              ),
+                              child: const Text(
+                                'Youtube',
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                       const SizedBox(height: 16),
                       _buildSelectionRow(),
                       const SizedBox(height: 16),
-                      _buildContent(),
+                      _selectedIndex == 0
+                          ? _buildContentInstructions()
+                          : const SizedBox.shrink(),
+                      _selectedIndex == 1
+                          ? _buildContentIngredients()
+                          : const SizedBox.shrink()
                     ],
                   ),
                 ),
@@ -253,24 +285,65 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
     );
   }
 
-  Widget _buildContent() {
-    final List<String> data =
-        _selectedIndex == 0 ? food.instructions.split('   ') : food.ingredients;
+  Widget _buildContentInstructions() {
+    return Text(food.instructions);
+  }
 
-    return ListView.builder(
+  Widget _buildContentIngredients() {
+    final List<String> data = food.ingredients;
+
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 1,
+      ),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(16),
       itemCount: data.length,
       itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Text(
-            data[index],
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-            ),
+        final ingredient = data[index];
+        final ingredientImage =
+            'https://www.themealdb.com/images/ingredients/$ingredient-Small.png';
+
+        return Container(
+          decoration: BoxDecoration(
+            color: AppColors.accent,
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(18),
+                child: Image.network(
+                  ingredientImage,
+                  height: 50,
+                  width: 50,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(
+                      Icons.image_not_supported,
+                      color: Colors.grey,
+                      size: 60,
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 8),
+              // Nome do Ingrediente
+              Text(
+                ingredient,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         );
       },
