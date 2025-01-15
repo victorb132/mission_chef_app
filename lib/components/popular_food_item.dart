@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mission_chef_app/models/meal_model.dart';
 import 'package:mission_chef_app/utils/app_colors.dart';
 
 class PopularFoodItem extends StatelessWidget {
-  final Map<String, dynamic> food;
+  final MealModel food;
 
   const PopularFoodItem({required this.food, super.key});
 
@@ -45,7 +46,7 @@ class PopularFoodItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        food["title"] ?? '',
+                        food.name,
                         style: const TextStyle(
                           fontSize: 20,
                           color: AppColors.primaryText,
@@ -62,7 +63,7 @@ class PopularFoodItem extends StatelessWidget {
                           ),
                           const SizedBox(width: 2),
                           Text(
-                            food["timer"] ?? '',
+                            food.id,
                             style: const TextStyle(
                               fontSize: 16,
                               color: AppColors.terciaryText,
@@ -76,7 +77,7 @@ class PopularFoodItem extends StatelessWidget {
                           ),
                           const SizedBox(width: 2),
                           Text(
-                            food["level"] ?? '',
+                            food.category,
                             style: const TextStyle(
                               fontSize: 16,
                               color: AppColors.terciaryText,
@@ -96,7 +97,7 @@ class PopularFoodItem extends StatelessWidget {
                 ),
                 clipBehavior: Clip.hardEdge,
                 child: Image.network(
-                  food["url"] ?? '',
+                  food.thumbnail,
                   fit: BoxFit.cover,
                 ),
               ),

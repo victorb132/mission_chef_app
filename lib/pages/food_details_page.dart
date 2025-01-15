@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mission_chef_app/models/meal_model.dart';
 import 'package:mission_chef_app/utils/app_colors.dart';
 
 class FoodDetailsPage extends StatefulWidget {
@@ -12,7 +13,7 @@ class FoodDetailsPage extends StatefulWidget {
 class _FoodDetailsPageState extends State<FoodDetailsPage> {
   int _selectedIndex = 0;
 
-  final food = Get.arguments as Map<String, dynamic>;
+  final food = Get.arguments as MealModel;
 
   @override
   Widget build(BuildContext context) {
@@ -60,20 +61,20 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
             ),
             clipBehavior: Clip.hardEdge,
             child: Image.network(
-              food['url'],
+              food.thumbnail,
               fit: BoxFit.cover,
             ),
           ),
         ),
         GestureDetector(
           onTap: () {
-            setState(() {
-              food['isFavorite'] = !food['isFavorite'];
-            });
+            // setState(() {
+            //   food['isFavorite'] = !food['isFavorite'];
+            // });
           },
           child: Padding(
             padding: const EdgeInsets.only(top: 8.0),
-            child: food['isFavorite']
+            child: food.category == 'favorite'
                 ? const Icon(
                     Icons.favorite,
                     color: Colors.red,
@@ -124,7 +125,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                     controller: scrollController,
                     children: [
                       Text(
-                        food['title'],
+                        food.name,
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -139,17 +140,17 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                           _buildInfoColumn(
                             Icons.timer_outlined,
                             'Preparo',
-                            food['timer'],
+                            food.id,
                           ),
                           _buildInfoColumn(
                             Icons.star_border,
                             'Dificuldade',
-                            food['level'],
+                            food.category,
                           ),
                           _buildInfoColumn(
                             Icons.filter_drama_rounded,
                             'Receitas',
-                            food['level'],
+                            food.name,
                           ),
                         ],
                       ),
@@ -254,7 +255,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
 
   Widget _buildContent() {
     final List<String> data =
-        _selectedIndex == 0 ? food['instructions'] : food['ingredients'];
+        _selectedIndex == 0 ? food.instructions.split('   ') : food.ingredients;
 
     return ListView.builder(
       shrinkWrap: true,

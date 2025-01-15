@@ -9,12 +9,17 @@ class MealController extends GetxController {
 
   var meals = <MealModel>[].obs;
   var isLoading = false.obs;
+  var categories = ["Todos"].obs;
 
   Future<void> fetchMeals() async {
     try {
       isLoading(true);
       final response = await mealService.getMeals();
       meals.value = response;
+      categories.value = [
+        "Todos",
+        ...response.map((meal) => meal.category).toSet(),
+      ];
     } catch (e) {
       Get.snackbar('Erro', 'Falha ao carregar as refeições: $e');
     } finally {

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:mission_chef_app/controllers/auth_controller.dart';
 import 'package:mission_chef_app/controllers/meal_controller.dart';
 import 'package:mission_chef_app/interfaces/auth_service_interface.dart';
-import 'package:mission_chef_app/interfaces/meals_service_interface.dart';
 import 'package:mission_chef_app/interfaces/request_service_interface.dart';
 import 'package:mission_chef_app/interfaces/user_service_interface.dart';
 import 'package:mission_chef_app/pages/challenges/mystery_challenge_page.dart';
