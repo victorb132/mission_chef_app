@@ -37,7 +37,7 @@ void main() async {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Mensagem recebida em segundo plano: ${message.messageId}");
+  // Handle data message
 }
 
 class MyApp extends StatelessWidget {

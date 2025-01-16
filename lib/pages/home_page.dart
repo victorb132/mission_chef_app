@@ -20,6 +20,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   AuthController authController = Get.find<AuthController>();
   final MealController mealController = Get.find<MealController>();
+
   final ScrollController _scrollController = ScrollController();
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -45,14 +46,9 @@ class _HomePageState extends State<HomePage> {
     }
     getUser();
 
-    // Configurar notificações locais
     _setupFlutterLocalNotifications();
 
-    // Listener para notificações recebidas em primeiro plano
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print(
-          "Mensagem recebida em primeiro plano: ${message.notification?.title}");
-
       if (message.notification != null) {
         _showNotification(
           title: message.notification!.title ?? "Sem título",
@@ -61,29 +57,35 @@ class _HomePageState extends State<HomePage> {
       }
     });
 
-    // Listener para quando o app é aberto por uma notificação
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print("Notificação clicada: ${message.notification?.title}");
+      // Listener para quando o app é aberto por uma notificação
     });
   }
 
-  // Configurar notificações locais
   void _setupFlutterLocalNotifications() {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
+    const DarwinInitializationSettings initializationSettingsDarwin =
+        DarwinInitializationSettings(
+      requestAlertPermission: false,
+      requestBadgePermission: false,
+      requestSoundPermission: false,
+    );
 
-    const InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
+    InitializationSettings initializationSettings =
+        const InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsDarwin,
+    );
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  // Exibir notificação local
   void _showNotification({required String title, required String body}) {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'default_channel', // ID do canal
-      'Notificações', // Nome do canal
+      'default_channel',
+      'Notificações',
       channelDescription: 'Canal de notificações padrão',
       importance: Importance.high,
       priority: Priority.high,
@@ -93,7 +95,7 @@ class _HomePageState extends State<HomePage> {
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
     flutterLocalNotificationsPlugin.show(
-      0, // ID da notificação
+      0,
       title,
       body,
       platformChannelSpecifics,
