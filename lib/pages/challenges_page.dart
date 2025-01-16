@@ -34,7 +34,7 @@ class _ChallengesPageState extends State<ChallengesPage> {
       description:
           "Receba um ingrediente aleatório do aplicativo e crie uma receita utilizando-o.",
       action: () {
-        Get.to(() => const MysteryChallengePage());
+        Get.toNamed('/mystery');
       },
     ),
     Challenge(
@@ -43,7 +43,16 @@ class _ChallengesPageState extends State<ChallengesPage> {
       description:
           "Crie um prato com apenas ingredientes de três cores escolhidas aleatoriamente pelo aplicativo.",
       action: () {
-        Get.to(() => const MysteryChallengePage());
+        Get.toNamed('/colors');
+      },
+    ),
+    Challenge(
+      id: 7,
+      title: "Desafio dos países",
+      description:
+          "Crie um prato que misture os 2 países escolhidos aleatoriamente pelo aplicativo.",
+      action: () {
+        Get.toNamed('/countries');
       },
     ),
     Challenge(
@@ -51,15 +60,6 @@ class _ChallengesPageState extends State<ChallengesPage> {
       title: "Desafio do Temporizador",
       description:
           "Prepare uma receita selecionada dentro de um tempo limite usando o temporizador integrado.",
-      action: () {
-        Get.to(() => const MysteryChallengePage());
-      },
-    ),
-    Challenge(
-      id: 7,
-      title: "Desafio Mundial",
-      description:
-          "Experimente cozinhar pratos de 5 diferentes culturas culinárias e compartilhe sua experiência.",
       action: () {
         Get.to(() => const MysteryChallengePage());
       },
@@ -98,6 +98,7 @@ class _ChallengesPageState extends State<ChallengesPage> {
         itemBuilder: (context, index) {
           final isExpanded = expandedCardIndex == index;
           final challenge = challenges[index];
+
           return GestureDetector(
             onTap: () {
               setState(() {

@@ -5,6 +5,8 @@ import 'package:mission_chef_app/controllers/meal_controller.dart';
 import 'package:mission_chef_app/interfaces/auth_service_interface.dart';
 import 'package:mission_chef_app/interfaces/request_service_interface.dart';
 import 'package:mission_chef_app/interfaces/user_service_interface.dart';
+import 'package:mission_chef_app/pages/challenges/colors_challenge_page.dart';
+import 'package:mission_chef_app/pages/challenges/countries_challenge_page.dart';
 import 'package:mission_chef_app/pages/challenges/mystery_challenge_page.dart';
 import 'package:mission_chef_app/pages/challenges_page.dart';
 import 'package:mission_chef_app/pages/favorites_page.dart';
@@ -65,6 +67,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/food-details', page: () => const FoodDetailsPage()),
         GetPage(name: '/timer', page: () => const TimerPage()),
         GetPage(name: '/mystery', page: () => const MysteryChallengePage()),
+        GetPage(name: '/colors', page: () => const ColorsChallengePage()),
+        GetPage(name: '/countries', page: () => const CountriesChallengePage()),
       ],
     );
   }

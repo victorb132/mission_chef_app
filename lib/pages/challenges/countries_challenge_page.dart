@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mission_chef_app/controllers/meal_controller.dart';
-import 'dart:math';
-
+import 'package:mission_chef_app/mock/countries_data.dart';
 import 'package:mission_chef_app/utils/app_colors.dart';
 
-class MysteryChallengePage extends StatefulWidget {
-  const MysteryChallengePage({super.key});
+class CountriesChallengePage extends StatefulWidget {
+  const CountriesChallengePage({super.key});
 
   @override
-  State<MysteryChallengePage> createState() => _MysteryChallengePageState();
+  State<CountriesChallengePage> createState() => _CountriesChallengePageState();
 }
 
-class _MysteryChallengePageState extends State<MysteryChallengePage>
+class _CountriesChallengePageState extends State<CountriesChallengePage>
     with SingleTickerProviderStateMixin {
-  String? selectedIngredient;
+  List<Map<String, String>> selectedCountries = [];
   bool isLoading = false;
-
-  final MealController mealController = Get.find();
 
   late AnimationController _animationController;
 
@@ -29,10 +25,8 @@ class _MysteryChallengePageState extends State<MysteryChallengePage>
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
-
-    if (mealController.ingredients.isEmpty) {
-      mealController.fetchAllIngredients();
-    }
+    // Inicializa com 2 países aleatórios
+    selectedCountries = _generateRandomCountries();
   }
 
   @override
@@ -41,7 +35,7 @@ class _MysteryChallengePageState extends State<MysteryChallengePage>
     super.dispose();
   }
 
-  void selectRandomIngredient() {
+  void selectRandomCountries() {
     setState(() {
       isLoading = true;
     });
@@ -49,14 +43,16 @@ class _MysteryChallengePageState extends State<MysteryChallengePage>
     // Inicia a animação
     _animationController.reset();
     _animationController.forward().whenComplete(() {
-      // Seleciona o ingrediente após a animação terminar
-      final random = Random();
       setState(() {
-        selectedIngredient = mealController
-            .ingredients[random.nextInt(mealController.ingredients.length)];
+        selectedCountries = _generateRandomCountries();
         isLoading = false;
       });
     });
+  }
+
+  List<Map<String, String>> _generateRandomCountries() {
+    final shuffled = countries..shuffle();
+    return shuffled.take(2).toList();
   }
 
   @override
@@ -91,32 +87,57 @@ class _MysteryChallengePageState extends State<MysteryChallengePage>
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  selectedIngredient ?? "Clique na colher para sortear",
+                const Text(
+                  "Países Aleatórios",
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 32.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 16.0),
-                selectedIngredient != null
-                    ? Expanded(
-                        child: Image.network(
-                          height: 200,
-                          'https://www.themealdb.com/images/ingredients/$selectedIngredient.png',
-                          fit: BoxFit.contain,
-                        ),
-                      )
-                    : const SizedBox.shrink(),
+                const SizedBox(height: 32.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: selectedCountries
+                      .map((country) => Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  country["flag"]!,
+                                  width: 100,
+                                  height: 60,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(
+                                      Icons.flag,
+                                      color: Colors.grey,
+                                      size: 60,
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                country["name"]!,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ))
+                      .toList(),
+                ),
                 const SizedBox(height: 32.0),
               ],
             ),
           ),
           const SizedBox(height: 16.0),
           InkWell(
-            onTap: selectRandomIngredient,
+            onTap: selectRandomCountries,
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
             child: Lottie.asset(
