@@ -46,10 +46,8 @@ class _MysteryChallengePageState extends State<MysteryChallengePage>
       isLoading = true;
     });
 
-    // Inicia a animação
     _animationController.reset();
     _animationController.forward().whenComplete(() {
-      // Seleciona o ingrediente após a animação terminar
       final random = Random();
       setState(() {
         selectedIngredient = mealController

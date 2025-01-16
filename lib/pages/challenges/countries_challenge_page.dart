@@ -25,7 +25,7 @@ class _CountriesChallengePageState extends State<CountriesChallengePage>
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
-    // Inicializa com 2 países aleatórios
+
     selectedCountries = _generateRandomCountries();
   }
 
@@ -40,7 +40,6 @@ class _CountriesChallengePageState extends State<CountriesChallengePage>
       isLoading = true;
     });
 
-    // Inicia a animação
     _animationController.reset();
     _animationController.forward().whenComplete(() {
       setState(() {

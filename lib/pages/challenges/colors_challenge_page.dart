@@ -26,7 +26,7 @@ class _ColorsChallengePageState extends State<ColorsChallengePage>
       vsync: this,
       duration: const Duration(milliseconds: 600),
     );
-    // Inicializa as cores aleatórias na primeira renderização
+
     selectedColors = _generateRandomColors();
   }
 
@@ -41,7 +41,6 @@ class _ColorsChallengePageState extends State<ColorsChallengePage>
       isLoading = true;
     });
 
-    // Inicia a animação
     _animationController.reset();
     _animationController.forward().whenComplete(() {
       setState(() {

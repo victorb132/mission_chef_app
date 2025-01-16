@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mission_chef_app/components/popular_food_item.dart';
@@ -18,13 +20,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   AuthController authController = Get.find<AuthController>();
   final MealController mealController = Get.find<MealController>();
+  final ScrollController _scrollController = ScrollController();
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   User? user;
-
   int _currentIndex = 0;
   int _selectedIndex = 0;
-
-  final ScrollController _scrollController = ScrollController();
 
   void getUser() async {
     final response = FirebaseAuth.instance.currentUser;
@@ -42,6 +44,60 @@ class _HomePageState extends State<HomePage> {
       mealController.fetchMeals();
     }
     getUser();
+
+    // Configurar notificações locais
+    _setupFlutterLocalNotifications();
+
+    // Listener para notificações recebidas em primeiro plano
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print(
+          "Mensagem recebida em primeiro plano: ${message.notification?.title}");
+
+      if (message.notification != null) {
+        _showNotification(
+          title: message.notification!.title ?? "Sem título",
+          body: message.notification!.body ?? "Sem corpo",
+        );
+      }
+    });
+
+    // Listener para quando o app é aberto por uma notificação
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print("Notificação clicada: ${message.notification?.title}");
+    });
+  }
+
+  // Configurar notificações locais
+  void _setupFlutterLocalNotifications() {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  // Exibir notificação local
+  void _showNotification({required String title, required String body}) {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'default_channel', // ID do canal
+      'Notificações', // Nome do canal
+      channelDescription: 'Canal de notificações padrão',
+      importance: Importance.high,
+      priority: Priority.high,
+    );
+
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    flutterLocalNotificationsPlugin.show(
+      0, // ID da notificação
+      title,
+      body,
+      platformChannelSpecifics,
+    );
   }
 
   List<MealModel> _getFilteredFoods() {
